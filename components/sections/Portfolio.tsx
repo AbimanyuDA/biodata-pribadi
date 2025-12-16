@@ -139,7 +139,7 @@ export function Portfolio() {
           ))}
         </div>
       </div>
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <Modal isOpen={open} onClose={() => setOpen(false)} title={current?.title || "Project Details"}>
         {current && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
