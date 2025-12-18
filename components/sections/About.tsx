@@ -99,7 +99,7 @@ export function About() {
                 Education
               </span>{" "}
               <span className="block dark:text-purple-300 font-semibold mt-1">
-                Informatics Eng
+                Informatics Engineering
               </span>
             </motion.li>
             <motion.li
