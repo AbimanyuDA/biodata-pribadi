@@ -47,6 +47,56 @@ const projects = [
     img: "/images/portofolio/TAkCekIn.png",
     desc: "Website deteksi format Tugas Akhir secara otomatis berbasis AI untuk memvalidasi dokumen akademik.",
   },
+  {
+    title: "Fundraising Strategy Analytics",
+    role: "Consulting & Data-Driven Insights",
+    url: "#",
+    img: "/images/portofolio/analysis1.png",
+    desc: "Menganalisis pola donasi dan segmentasi donor untuk merancang strategi fundraising yang lebih efektif bagi organisasi non-profit.",
+    fullDesc:
+      "Menggunakan analisis statistik dan clustering untuk mengidentifikasi segmen donor potensial serta rekomendasi strategi komunikasi berbasis data.",
+    outputs: [
+      "Dashboard interaktif donor segmentation",
+      "Rekomendasi strategi komunikasi & channel",
+      "Potensi peningkatan engagement",
+      "Actionable insights untuk decision-making",
+    ],
+    tools: ["Python", "Excel", "Tableau"],
+  },
+  {
+    title: "UMKM Inventory Optimization Analytics",
+    role: "Consulting & Data-Driven Strategy",
+    url: "#",
+    img: "/images/portofolio/analysis2.png",
+    desc: "Menganalisis data penjualan & perputaran stok untuk merancang strategi inventory forecasting dan reorder optimization.",
+    fullDesc:
+      "UMKM mengalami overstock dan stock-out pada produk tertentu, menyebabkan biaya penyimpanan tinggi dan kehilangan penjualan. Analisis histori penjualan dan pergerakan stok untuk mengidentifikasi pola demand musiman, produk dengan perputaran cepat, serta kategori stok yang memerlukan prioritas restock.",
+    outputs: [
+      "Dashboard interaktif dengan tren penjualan bulanan",
+      "ABC classification & safety stock simulation",
+      "Reorder point & rekomendasi pengadaan produk",
+      "Efisiensi biaya penyimpanan hingga 10–18%",
+      "Penurunan stock-out hingga 25%",
+    ],
+    tools: ["Python", "Excel", "Tableau"],
+  },
+  {
+    title: "Endless Car",
+    role: "Game Development & C# Programming",
+    url: "#",
+    img: "/images/portofolio/endlesscar.png",
+    desc: "Infinite endless runner game dengan mekanik dinamis, obstacle avoidance, dan progressive difficulty scaling.",
+    fullDesc:
+      "Game arcade-style yang dirancang dengan gameplay mechanics yang addictive. Pemain mengendalikan mobil untuk menghindari obstacle sambil mengumpulkan poin. Logika permainan dibangun menggunakan C# dengan sistem scoring dinamis, level progression, dan visual effects yang smooth.",
+    outputs: [
+      "Smooth vehicle control & responsive input handling",
+      "Dynamic obstacle generation & difficulty scaling",
+      "Scoring system dengan combo mechanics",
+      "Visual & audio feedback untuk enhanced UX",
+      "High score tracking & game state management",
+    ],
+    tools: ["Unity", "C#"],
+  },
 ];
 
 export function Portfolio() {
@@ -139,7 +189,11 @@ export function Portfolio() {
           ))}
         </div>
       </div>
-      <Modal isOpen={open} onClose={() => setOpen(false)} title={current?.title || "Project Details"}>
+      <Modal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        title={current?.title || "Project Details"}
+      >
         {current && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
@@ -186,30 +240,82 @@ export function Portfolio() {
                     {current.desc}
                   </p>
 
+                  {/* Full Description if available */}
+                  {(current as any).fullDesc && (
+                    <p className="text-sm md:text-base text-gray-200 leading-relaxed mb-6 italic">
+                      {(current as any).fullDesc}
+                    </p>
+                  )}
+
+                  {/* Outputs if available */}
+                  {(current as any).outputs && (
+                    <div className="mb-8">
+                      <p className="text-xs font-bold text-cyan-300 mb-3 uppercase tracking-wider">
+                        📊 Deliverables
+                      </p>
+                      <ul className="space-y-2">
+                        {(current as any).outputs.map(
+                          (output: string, idx: number) => (
+                            <li
+                              key={idx}
+                              className="text-sm text-gray-200 flex items-start gap-2"
+                            >
+                              <span className="text-cyan-400 font-bold">✓</span>
+                              {output}
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Tools if available */}
+                  {(current as any).tools && (
+                    <div className="mb-8">
+                      <p className="text-xs font-bold text-cyan-300 mb-3 uppercase tracking-wider">
+                        🛠️ Tools
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {(current as any).tools.map(
+                          (tool: string, idx: number) => (
+                            <span
+                              key={idx}
+                              className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-500/30 to-purple-500/30 border border-blue-400/50 text-sm font-semibold text-blue-200"
+                            >
+                              {tool}
+                            </span>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Info Cards - More Vibrant */}
-                  <div className="grid grid-cols-2 gap-4 mb-8">
-                    <div className="p-4 rounded-xl bg-gradient-to-br from-cyan-500/30 to-cyan-600/20 border-2 border-cyan-400/60 hover:from-cyan-500/40 hover:to-cyan-600/30 transition-all">
-                      <p className="text-xs font-bold text-cyan-300 mb-2 uppercase tracking-wider">
-                        Type
-                      </p>
-                      <p className="font-bold text-cyan-100 text-lg">
-                        Web Project
-                      </p>
+                  {!(current as any).outputs && (
+                    <div className="grid grid-cols-2 gap-4 mb-8">
+                      <div className="p-4 rounded-xl bg-gradient-to-br from-cyan-500/30 to-cyan-600/20 border-2 border-cyan-400/60 hover:from-cyan-500/40 hover:to-cyan-600/30 transition-all">
+                        <p className="text-xs font-bold text-cyan-300 mb-2 uppercase tracking-wider">
+                          Type
+                        </p>
+                        <p className="font-bold text-cyan-100 text-lg">
+                          Web Project
+                        </p>
+                      </div>
+                      <div className="p-4 rounded-xl bg-gradient-to-br from-green-500/30 to-emerald-600/20 border-2 border-green-400/60 hover:from-green-500/40 hover:to-emerald-600/30 transition-all">
+                        <p className="text-xs font-bold text-green-300 mb-2 uppercase tracking-wider">
+                          Status
+                        </p>
+                        <p className="font-bold text-green-100 text-lg">
+                          🚀 Live
+                        </p>
+                      </div>
                     </div>
-                    <div className="p-4 rounded-xl bg-gradient-to-br from-green-500/30 to-emerald-600/20 border-2 border-green-400/60 hover:from-green-500/40 hover:to-emerald-600/30 transition-all">
-                      <p className="text-xs font-bold text-green-300 mb-2 uppercase tracking-wider">
-                        Status
-                      </p>
-                      <p className="font-bold text-green-100 text-lg">
-                        🚀 Live
-                      </p>
-                    </div>
-                  </div>
+                  )}
                 </div>
 
                 {/* Buttons */}
                 <div className="flex gap-3">
-                  {current.url && (
+                  {current.url && current.url !== "#" && (
                     <motion.a
                       href={current.url}
                       target="_blank"
