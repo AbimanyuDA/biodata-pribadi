@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { hoverLift, revealOnScroll } from "../../utils/animations";
 import { Modal } from "../Modal";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const projects = [
   {
@@ -102,91 +103,191 @@ const projects = [
 export function Portfolio() {
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState<(typeof projects)[0] | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(true);
+
+  // Auto-advance carousel
+  useEffect(() => {
+    if (!autoPlay) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % projects.length);
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [autoPlay]);
+
+  const visibleProjects = projects.slice(currentIndex, currentIndex + 3);
+  const hasNextPage = currentIndex + 3 < projects.length;
+
+  const handleNext = () => {
+    if (hasNextPage) {
+      setCurrentIndex((prev) => prev + 1);
+    } else {
+      setCurrentIndex(0);
+    }
+    setAutoPlay(false);
+    setTimeout(() => setAutoPlay(true), 6000); // Resume auto-play after 6 seconds
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
+    setAutoPlay(false);
+    setTimeout(() => setAutoPlay(true), 6000);
+  };
   return (
     <section id="portfolio" className="section">
       <div className="glass-panel p-8 md:p-10">
-        <h2 className="section-title dark:text-white">My Portofolio</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((p, idx) => (
-            <motion.button
-              key={p.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.15, duration: 0.6 }}
-              whileHover={{ y: -12, transition: { duration: 0.3 } }}
-              suppressHydrationWarning
-              onClick={() => {
-                setCurrent(p);
-                setOpen(true);
-              }}
-              className="text-left rounded-2xl overflow-hidden cursor-pointer group relative"
+        <h2 className="section-title dark:text-white mb-2">My Portofolio</h2>
+        <p className="text-black/60 dark:text-white/60 mb-8 text-sm">
+          Swipe or use arrows to explore {projects.length} projects
+        </p>
+
+        {/* Carousel Container */}
+        <div className="relative">
+          {/* Main Carousel */}
+          <div className="overflow-hidden">
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              animate={{ x: 0 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              {/* Glow effect on hover */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-50 blur transition-all duration-500 -z-10" />
+              {visibleProjects.map((p, idx) => (
+                <motion.button
+                  key={`${p.title}-${currentIndex + idx}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ delay: idx * 0.1, duration: 0.4 }}
+                  whileHover={{ y: -12, transition: { duration: 0.3 } }}
+                  suppressHydrationWarning
+                  onClick={() => {
+                    setCurrent(p);
+                    setOpen(true);
+                  }}
+                  className="text-left rounded-2xl overflow-hidden cursor-pointer group relative"
+                >
+                  {/* Glow effect on hover */}
+                  <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-50 blur transition-all duration-500 -z-10" />
 
-              {/* Card Background with gradient */}
-              <div className="relative bg-gradient-to-br dark:from-slate-800/60 dark:to-slate-900/80 border border-white/10 dark:border-white/5 rounded-2xl backdrop-blur-md overflow-hidden shadow-xl dark:shadow-2xl hover:shadow-2xl dark:hover:shadow-cyan-500/30 transition-all duration-300">
-                {/* Image Container */}
-                <div className="aspect-video overflow-hidden bg-gradient-to-br from-gray-300 to-gray-400 dark:from-slate-700 dark:to-slate-800 relative">
-                  <motion.img
-                    src={p.img}
-                    alt={p.title}
-                    className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.15, rotate: 2 }}
-                    transition={{ duration: 0.5 }}
-                  />
+                  {/* Card Background with gradient */}
+                  <div className="relative bg-gradient-to-br dark:from-slate-800/60 dark:to-slate-900/80 border border-white/10 dark:border-white/5 rounded-2xl backdrop-blur-md overflow-hidden shadow-xl dark:shadow-2xl hover:shadow-2xl dark:hover:shadow-cyan-500/30 transition-all duration-300">
+                    {/* Image Container */}
+                    <div className="aspect-video overflow-hidden bg-gradient-to-br from-gray-300 to-gray-400 dark:from-slate-700 dark:to-slate-800 relative">
+                      <motion.img
+                        src={p.img}
+                        alt={p.title}
+                        className="w-full h-full object-cover"
+                        whileHover={{ scale: 1.15, rotate: 2 }}
+                        transition={{ duration: 0.5 }}
+                      />
 
-                  {/* Overlay gradient with animation */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
+                      {/* Overlay gradient with animation */}
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
+                        initial={{ opacity: 0 }}
+                        whileHover={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                      />
 
-                  {/* Badge */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    whileHover={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute top-3 right-3 px-3 py-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-semibold rounded-full shadow-lg"
-                  >
-                    Featured
-                  </motion.div>
-                </div>
+                      {/* Badge */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        whileHover={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute top-3 right-3 px-3 py-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-semibold rounded-full shadow-lg"
+                      >
+                        Featured
+                      </motion.div>
+                    </div>
 
-                {/* Content */}
-                <div className="p-6 bg-gradient-to-b dark:from-slate-800/90 dark:to-slate-900/95 backdrop-blur-sm border-t border-white/5">
-                  <div className="mb-3">
-                    <h3 className="font-poppins font-bold text-base md:text-lg dark:text-white group-hover:text-cyan-300 transition-colors duration-300 line-clamp-2">
-                      {p.title}
-                    </h3>
-                    <p className="text-xs md:text-sm bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold mt-2">
-                      {p.role}
-                    </p>
+                    {/* Content */}
+                    <div className="p-6 bg-gradient-to-b dark:from-slate-800/90 dark:to-slate-900/95 backdrop-blur-sm border-t border-white/5">
+                      <div className="mb-3">
+                        <h3 className="font-poppins font-bold text-base md:text-lg dark:text-white group-hover:text-cyan-300 transition-colors duration-300 line-clamp-2">
+                          {p.title}
+                        </h3>
+                        <p className="text-xs md:text-sm bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold mt-2">
+                          {p.role}
+                        </p>
+                      </div>
+                      <p className="text-xs md:text-sm dark:text-gray-300 leading-relaxed line-clamp-3 group-hover:text-gray-100 transition-colors">
+                        {p.desc}
+                      </p>
+
+                      {/* Interactive arrow indicator */}
+                      <motion.div
+                        className="mt-4 flex items-center gap-2 text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        whileHover={{ x: 5 }}
+                      >
+                        <span>View Details</span>
+                        <motion.span
+                          animate={{ x: [0, 3, 0] }}
+                          transition={{ duration: 1.5, repeat: Infinity }}
+                        >
+                          →
+                        </motion.span>
+                      </motion.div>
+                    </div>
                   </div>
-                  <p className="text-xs md:text-sm dark:text-gray-300 leading-relaxed line-clamp-3 group-hover:text-gray-100 transition-colors">
-                    {p.desc}
-                  </p>
+                </motion.button>
+              ))}
+            </motion.div>
+          </div>
 
-                  {/* Interactive arrow indicator */}
-                  <motion.div
-                    className="mt-4 flex items-center gap-2 text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    whileHover={{ x: 5 }}
-                  >
-                    <span>View Details</span>
-                    <motion.span
-                      animate={{ x: [0, 3, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                      →
-                    </motion.span>
-                  </motion.div>
-                </div>
-              </div>
+          {/* Navigation Buttons */}
+          <div className="flex items-center justify-between mt-8">
+            <motion.button
+              onClick={handlePrev}
+              whileHover={{ scale: 1.1, x: -3 }}
+              whileTap={{ scale: 0.95 }}
+              className="p-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/50 hover:border-cyan-400 dark:hover:border-cyan-300 transition-all shadow-lg hover:shadow-cyan-500/50"
+              suppressHydrationWarning
+            >
+              <ChevronLeft className="h-6 w-6 text-cyan-600 dark:text-cyan-400" />
             </motion.button>
-          ))}
+
+            {/* Dot Indicators */}
+            <div className="flex gap-2 justify-center flex-wrap max-w-xs">
+              {Array.from({ length: Math.ceil(projects.length / 1) }).map(
+                (_, idx) => (
+                  <motion.button
+                    key={idx}
+                    onClick={() => {
+                      setCurrentIndex(idx);
+                      setAutoPlay(false);
+                      setTimeout(() => setAutoPlay(true), 6000);
+                    }}
+                    className={`h-2 rounded-full transition-all ${
+                      idx >= currentIndex && idx < currentIndex + 3
+                        ? "w-6 bg-gradient-to-r from-cyan-500 to-blue-500"
+                        : "w-2 bg-gray-400/50 dark:bg-white/20 hover:bg-gray-400"
+                    }`}
+                    whileHover={{ scale: 1.2 }}
+                    suppressHydrationWarning
+                  />
+                )
+              )}
+            </div>
+
+            <motion.button
+              onClick={handleNext}
+              whileHover={{ scale: 1.1, x: 3 }}
+              whileTap={{ scale: 0.95 }}
+              className="p-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/50 hover:border-cyan-400 dark:hover:border-cyan-300 transition-all shadow-lg hover:shadow-cyan-500/50"
+              suppressHydrationWarning
+            >
+              <ChevronRight className="h-6 w-6 text-cyan-600 dark:text-cyan-400" />
+            </motion.button>
+          </div>
+
+          {/* Counter */}
+          <div className="text-center mt-6">
+            <p className="text-sm text-black/60 dark:text-white/60">
+              Showing {currentIndex + 1}-
+              {Math.min(currentIndex + 3, projects.length)} of {projects.length}
+            </p>
+          </div>
         </div>
       </div>
       <Modal
