@@ -98,6 +98,59 @@ const projects = [
     ],
     tools: ["Unity", "C#"],
   },
+  {
+    title: "Schematics 2025 Website",
+    role: "Project Manager",
+    url: "https://www.schematics-its.com/",
+    img: "/images/portofolio/schematics.png",
+    desc: "Project Manager & Lead Developer untuk pembuatan website Schematics 2025, event mahasiswa Teknik Informatika ITS dengan kompetisi pemrograman dan logika nasional.",
+    fullDesc:
+      "Schematics adalah event karya mahasiswa Teknik Informatika Institut Teknologi Sepuluh Nopember yang berfokus pada kompetisi pemrograman dan logika serta memperkenalkan teknologi kepada masyarakat luas. Event ini mencakup: National Programming Competition (NPC), National Logic Competition (NLC), dan Bootcamp, Seminar, Technology (BST). Sebagai Project Manager dan Full Stack Developer, mengkoordinasikan tim development dalam membangun website yang menampilkan informasi kompetisi, pendaftaran peserta, leaderboard real-time, dan integrasi dengan sistem penjurian otomatis.",
+    outputs: [
+      "Website responsif dengan user experience premium",
+      "Sistem registrasi peserta untuk NPC, NLC, dan BST",
+      "Leaderboard real-time untuk kompetisi",
+      "Integrasi payment gateway untuk pendaftaran",
+      "Admin dashboard untuk manajemen event & scoreboard",
+      "Sistem notifikasi real-time untuk update kompetisi",
+      "Merchandise & ticketing integration",
+    ],
+    tools: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL",
+      "Vercel",
+    ],
+  },
+  {
+    title: "AI-Based Credit Card Fraud Detection System",
+    role: "AI Engineer & Full Stack Developer",
+    url: "#",
+    img: "/images/portofolio/fraud.png",
+    desc: "Sistem deteksi fraud kartu kredit berbasis rules engine dan machine learning untuk bank, mengidentifikasi transaksi mencurigakan secara real-time.",
+    fullDesc:
+      "Sistem fraud detection yang menggabungkan rule-based logic dengan artificial intelligence untuk menganalisis transaksi kartu kredit dan mengidentifikasi aktivitas mencurigakan dengan akurasi tinggi. Menggunakan kombinasi rule engine untuk pattern matching dan model machine learning (Random Forest, XGBoost) untuk deteksi anomali, dengan real-time processing capability untuk reject atau approve transaksi dalam hitungan milliseconds.",
+    outputs: [
+      "Rule engine dengan 50+ pattern rules untuk fraud detection",
+      "Machine learning model dengan 95%+ akurasi",
+      "Real-time transaction processing pipeline",
+      "Alert dashboard dengan fraud risk scoring",
+      "Historical analysis & trend reporting",
+      "Integration dengan banking system API",
+      "Model explainability untuk compliance & audit",
+    ],
+    tools: [
+      "Python",
+      "TensorFlow",
+      "XGBoost",
+      "Node.js",
+      "PostgreSQL",
+      "Docker",
+      "AWS",
+    ],
+  },
 ];
 
 export function Portfolio() {
