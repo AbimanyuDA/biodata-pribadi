@@ -115,14 +115,7 @@ const projects = [
       "Sistem notifikasi real-time untuk update kompetisi",
       "Merchandise & ticketing integration",
     ],
-    tools: [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Node.js",
-      "PostgreSQL",
-      "Vercel",
-    ],
+    tools: ["Next.js", "React", "TypeScript", "Node.js"],
   },
   {
     title: "AI-Based Credit Card Fraud Detection System",
