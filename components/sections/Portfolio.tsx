@@ -151,33 +151,54 @@ export function Portfolio() {
   const [current, setCurrent] = useState<(typeof projects)[0] | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
+  const [screenSize, setScreenSize] = useState<"mobile" | "tablet" | "desktop">(
+    "desktop"
+  );
+
+  // Detect screen size
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== "undefined") {
+        const width = window.innerWidth;
+        if (width < 640) setScreenSize("mobile");
+        else if (width < 1024) setScreenSize("tablet");
+        else setScreenSize("desktop");
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Determine items per slide based on screen size
+  const itemsPerSlide = screenSize === "mobile" ? 1 : screenSize === "tablet" ? 2 : 3;
+  const totalSlides = Math.ceil(projects.length / itemsPerSlide);
 
   // Auto-advance carousel
   useEffect(() => {
     if (!autoPlay) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % projects.length);
+      setCurrentIndex((prev) => (prev + 1) % totalSlides);
     }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(interval);
-  }, [autoPlay]);
+  }, [autoPlay, totalSlides]);
 
-  const visibleProjects = projects.slice(currentIndex, currentIndex + 3);
-  const hasNextPage = currentIndex + 3 < projects.length;
+  const visibleProjects = projects.slice(
+    currentIndex * itemsPerSlide,
+    (currentIndex + 1) * itemsPerSlide
+  );
 
   const handleNext = () => {
-    if (hasNextPage) {
-      setCurrentIndex((prev) => prev + 1);
-    } else {
-      setCurrentIndex(0);
-    }
+    setCurrentIndex((prev) => (prev + 1) % totalSlides);
     setAutoPlay(false);
-    setTimeout(() => setAutoPlay(true), 6000); // Resume auto-play after 6 seconds
+    setTimeout(() => setAutoPlay(true), 6000);
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + projects.length) % projects.length);
+    setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
     setAutoPlay(false);
     setTimeout(() => setAutoPlay(true), 6000);
   };
@@ -192,91 +213,107 @@ export function Portfolio() {
         {/* Carousel Container */}
         <div className="relative">
           {/* Main Carousel */}
-          <div className="overflow-hidden">
+          <div className="overflow-hidden rounded-lg">
             <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-              animate={{ x: 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className={`grid gap-6 ${
+                screenSize === "mobile"
+                  ? "grid-cols-1"
+                  : screenSize === "tablet"
+                    ? "grid-cols-2"
+                    : "grid-cols-3"
+              }`}
+              initial={false}
+              animate={{
+                opacity: 1,
+                transition: { duration: 0.3 },
+              }}
+              key={currentIndex}
             >
               {visibleProjects.map((p, idx) => (
-                <motion.button
-                  key={`${p.title}-${currentIndex + idx}`}
+                <motion.div
+                  key={`${p.title}-${currentIndex}-${idx}`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ delay: idx * 0.1, duration: 0.4 }}
-                  whileHover={{ y: -12, transition: { duration: 0.3 } }}
-                  suppressHydrationWarning
-                  onClick={() => {
-                    setCurrent(p);
-                    setOpen(true);
+                  transition={{ 
+                    duration: 0.5, 
+                    delay: idx * 0.1,
+                    ease: "easeOut"
                   }}
-                  className="text-left rounded-2xl overflow-hidden cursor-pointer group relative"
                 >
-                  {/* Glow effect on hover */}
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-50 blur transition-all duration-500 -z-10" />
+                  <motion.button
+                    suppressHydrationWarning
+                    onClick={() => {
+                      setCurrent(p);
+                      setOpen(true);
+                    }}
+                    whileHover={{ y: -12, transition: { duration: 0.3 } }}
+                    className="text-left rounded-2xl overflow-hidden cursor-pointer group relative h-full"
+                  >
+                    {/* Glow effect on hover */}
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-0 group-hover:opacity-50 blur transition-all duration-500 -z-10" />
 
-                  {/* Card Background with gradient */}
-                  <div className="relative bg-gradient-to-br dark:from-slate-800/60 dark:to-slate-900/80 border border-white/10 dark:border-white/5 rounded-2xl backdrop-blur-md overflow-hidden shadow-xl dark:shadow-2xl hover:shadow-2xl dark:hover:shadow-cyan-500/30 transition-all duration-300">
-                    {/* Image Container */}
-                    <div className="aspect-video overflow-hidden bg-gradient-to-br from-gray-300 to-gray-400 dark:from-slate-700 dark:to-slate-800 relative">
-                      <motion.img
-                        src={p.img}
-                        alt={p.title}
-                        className="w-full h-full object-cover"
-                        whileHover={{ scale: 1.15, rotate: 2 }}
-                        transition={{ duration: 0.5 }}
-                      />
+                    {/* Card Background with gradient */}
+                    <div className="relative bg-gradient-to-br dark:from-slate-800/60 dark:to-slate-900/80 border border-white/10 dark:border-white/5 rounded-2xl backdrop-blur-md overflow-hidden shadow-xl dark:shadow-2xl hover:shadow-2xl dark:hover:shadow-cyan-500/30 transition-all duration-300 h-full flex flex-col">
+                      {/* Image Container */}
+                      <div className="aspect-video overflow-hidden bg-gradient-to-br from-gray-300 to-gray-400 dark:from-slate-700 dark:to-slate-800 relative">
+                        <motion.img
+                          src={p.img}
+                          alt={p.title}
+                          className="w-full h-full object-cover"
+                          whileHover={{ scale: 1.15, rotate: 2 }}
+                          transition={{ duration: 0.5 }}
+                        />
 
-                      {/* Overlay gradient with animation */}
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
-                        initial={{ opacity: 0 }}
-                        whileHover={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                      />
+                        {/* Overlay gradient with animation */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
+                          initial={{ opacity: 0 }}
+                          whileHover={{ opacity: 1 }}
+                          transition={{ duration: 0.3 }}
+                        />
 
-                      {/* Badge */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        whileHover={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute top-3 right-3 px-3 py-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-semibold rounded-full shadow-lg"
-                      >
-                        Featured
-                      </motion.div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6 bg-gradient-to-b dark:from-slate-800/90 dark:to-slate-900/95 backdrop-blur-sm border-t border-white/5">
-                      <div className="mb-3">
-                        <h3 className="font-poppins font-bold text-base md:text-lg dark:text-white group-hover:text-cyan-300 transition-colors duration-300 line-clamp-2">
-                          {p.title}
-                        </h3>
-                        <p className="text-xs md:text-sm bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold mt-2">
-                          {p.role}
-                        </p>
-                      </div>
-                      <p className="text-xs md:text-sm dark:text-gray-300 leading-relaxed line-clamp-3 group-hover:text-gray-100 transition-colors">
-                        {p.desc}
-                      </p>
-
-                      {/* Interactive arrow indicator */}
-                      <motion.div
-                        className="mt-4 flex items-center gap-2 text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        whileHover={{ x: 5 }}
-                      >
-                        <span>View Details</span>
-                        <motion.span
-                          animate={{ x: [0, 3, 0] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
+                        {/* Badge */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          whileHover={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="absolute top-3 right-3 px-3 py-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-semibold rounded-full shadow-lg"
                         >
-                          →
-                        </motion.span>
-                      </motion.div>
+                          Featured
+                        </motion.div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-6 bg-gradient-to-b dark:from-slate-800/90 dark:to-slate-900/95 backdrop-blur-sm border-t border-white/5 flex-grow flex flex-col">
+                        <div className="mb-3">
+                          <h3 className="font-poppins font-bold text-base md:text-lg dark:text-white group-hover:text-cyan-300 transition-colors duration-300 line-clamp-2">
+                            {p.title}
+                          </h3>
+                          <p className="text-xs md:text-sm bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent font-semibold mt-2">
+                            {p.role}
+                          </p>
+                        </div>
+                        <p className="text-xs md:text-sm dark:text-gray-300 leading-relaxed line-clamp-3 group-hover:text-gray-100 transition-colors flex-grow">
+                          {p.desc}
+                        </p>
+
+                        {/* Interactive arrow indicator */}
+                        <motion.div
+                          className="mt-4 flex items-center gap-2 text-xs font-semibold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          whileHover={{ x: 5 }}
+                        >
+                          <span>View Details</span>
+                          <motion.span
+                            animate={{ x: [0, 3, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            →
+                          </motion.span>
+                        </motion.div>
+                      </div>
                     </div>
-                  </div>
-                </motion.button>
+                  </motion.button>
+                </motion.div>
               ))}
             </motion.div>
           </div>
@@ -295,7 +332,7 @@ export function Portfolio() {
 
             {/* Dot Indicators */}
             <div className="flex gap-2 justify-center flex-wrap max-w-xs">
-              {Array.from({ length: Math.ceil(projects.length / 1) }).map(
+              {Array.from({ length: totalSlides }).map(
                 (_, idx) => (
                   <motion.button
                     key={idx}
@@ -305,7 +342,7 @@ export function Portfolio() {
                       setTimeout(() => setAutoPlay(true), 6000);
                     }}
                     className={`h-2 rounded-full transition-all ${
-                      idx >= currentIndex && idx < currentIndex + 3
+                      idx === currentIndex
                         ? "w-6 bg-gradient-to-r from-cyan-500 to-blue-500"
                         : "w-2 bg-gray-400/50 dark:bg-white/20 hover:bg-gray-400"
                     }`}
@@ -330,8 +367,10 @@ export function Portfolio() {
           {/* Counter */}
           <div className="text-center mt-6">
             <p className="text-sm text-black/60 dark:text-white/60">
-              Showing {currentIndex + 1}-
-              {Math.min(currentIndex + 3, projects.length)} of {projects.length}
+              Slide {currentIndex + 1} of {totalSlides} •{" "}
+              {currentIndex * itemsPerSlide + 1}-
+              {Math.min((currentIndex + 1) * itemsPerSlide, projects.length)} of{" "}
+              {projects.length} projects
             </p>
           </div>
         </div>
