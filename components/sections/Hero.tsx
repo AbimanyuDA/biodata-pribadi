@@ -87,7 +87,7 @@ export function Hero() {
           variants={staggerChildren(0.06)}
           initial="initial"
           animate="animate"
-          className="glass-panel p-8 md:p-12 relative"
+          className="glass-panel p-6 sm:p-8 md:p-12 relative"
         >
           <motion.p
             variants={fadeUp}
@@ -97,13 +97,13 @@ export function Hero() {
           </motion.p>
           <motion.h1
             variants={parallaxText(30)}
-            className="font-poppins text-5xl md:text-7xl tracking-tight mb-6 bg-gradient-to-r from-black to-black/70 dark:from-white dark:to-white/70 bg-clip-text text-transparent"
+            className="font-poppins text-3xl sm:text-4xl md:text-6xl lg:text-7xl tracking-tight mb-6 bg-gradient-to-r from-black to-black/70 dark:from-white dark:to-white/70 bg-clip-text text-transparent break-words"
           >
             Abimanyu Danendra Andarfebano
           </motion.h1>
           <motion.p
             variants={fadeUp}
-            className="text-lg md:text-xl text-black/70 dark:text-white/70 max-w-2xl mb-8"
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-black/70 dark:text-white/70 max-w-2xl mb-8"
           >
             Fullstack Developer | Data, Finance, and Investment
           </motion.p>
@@ -111,44 +111,42 @@ export function Hero() {
           {/* Animated Metrics */}
           <motion.div
             variants={fadeUp}
-            className="grid grid-cols-3 gap-6 mb-10 py-6 border-y border-black/10 dark:border-white/10"
+            className="grid grid-cols-3 gap-3 md:gap-6 mb-10 py-6 border-y border-black/10 dark:border-white/10"
           >
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-lg bg-cyan-500/20 dark:bg-cyan-500/30">
-                <Code2 className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
+            <div className="flex flex-col items-center gap-2 md:flex-row md:gap-3">
+              <div className="p-2 md:p-3 rounded-lg bg-cyan-500/20 dark:bg-cyan-500/30">
+                <Code2 className="h-4 w-4 md:h-5 md:w-5 text-cyan-600 dark:text-cyan-400" />
               </div>
-              <div>
-                <div className="text-2xl font-bold text-black dark:text-white">
-                  <AnimatedCounter value={6} suffix="+" />
+              <div className="text-center md:text-left">
+                <div className="text-xl md:text-2xl font-bold text-black dark:text-white">
+                  <AnimatedCounter value={9} suffix="+" />
                 </div>
                 <p className="text-xs text-black/60 dark:text-white/60">
                   Projects
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-lg bg-blue-500/20 dark:bg-blue-500/30">
-                <Zap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+            <div className="flex flex-col items-center gap-2 md:flex-row md:gap-3">
+              <div className="p-2 md:p-3 rounded-lg bg-blue-500/20 dark:bg-blue-500/30">
+                <Zap className="h-4 w-4 md:h-5 md:w-5 text-blue-600 dark:text-blue-400" />
               </div>
-              <div>
-                <div className="text-2xl font-bold text-black dark:text-white">
+              <div className="text-center md:text-left">
+                <div className="text-xl md:text-2xl font-bold text-black dark:text-white">
                   <AnimatedCounter value={2} suffix="+" />
                 </div>
-                <p className="text-xs text-black/60 dark:text-white/60">
-                  Years Exp
-                </p>
+                <p className="text-xs text-black/60 dark:text-white/60">Exp</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-lg bg-purple-500/20 dark:bg-purple-500/30">
-                <Target className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            <div className="flex flex-col items-center gap-2 md:flex-row md:gap-3">
+              <div className="p-2 md:p-3 rounded-lg bg-purple-500/20 dark:bg-purple-500/30">
+                <Target className="h-4 w-4 md:h-5 md:w-5 text-purple-600 dark:text-purple-400" />
               </div>
-              <div>
-                <div className="text-2xl font-bold text-black dark:text-white">
+              <div className="text-center md:text-left">
+                <div className="text-xl md:text-2xl font-bold text-black dark:text-white">
                   <AnimatedCounter value={5} suffix="+" />
                 </div>
                 <p className="text-xs text-black/60 dark:text-white/60">
-                  Achievements
+                  Awards
                 </p>
               </div>
             </div>
