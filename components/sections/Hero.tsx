@@ -105,7 +105,7 @@ export function Hero() {
             variants={fadeUp}
             className="text-sm sm:text-base md:text-lg lg:text-xl text-black/70 dark:text-white/70 max-w-2xl mb-8"
           >
-            Fullstack Developer | Data, Finance, and Investment
+            AI Engineer | Fullstack Developer & Data Scientist | Finance and Investment
           </motion.p>
 
           {/* Animated Metrics */}

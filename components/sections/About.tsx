@@ -47,11 +47,11 @@ export function About() {
             transition={{ delay: 0.1, duration: 0.6 }}
             viewport={{ once: true }}
           >
-            Business-Oriented Full-Stack Developer dengan minat kuat pada
-            finance, investasi, dan data analytics. Berpengalaman mengembangkan
-            solusi digital end-to-end, mengelola dan menganalisis data keuangan,
-            serta menghubungkan teknologi dengan strategi bisnis untuk mendukung
-            pengambilan keputusan berbasis data.
+            Business-Oriented Full-Stack Developer & AI Engineer dengan minat kuat pada
+            finance, investasi, dan full stack data scientis. Berpengalaman mengembangkan
+            solusi digital end-to-end, merancang kapabilitas artificial intelligence,
+            mengelola dan menganalisis data keuangan, serta menghubungkan teknologi dengan
+            strategi bisnis untuk mendukung pengambilan keputusan berbasis data.
           </motion.p>
           <motion.ul
             className="grid grid-cols-2 gap-4 text-sm mb-6"
@@ -84,8 +84,11 @@ export function About() {
               <span className="text-black/50 dark:text-gray-400 text-xs">
                 Role
               </span>{" "}
-              <span className="block dark:text-blue-300 font-semibold mt-1">
-                Fullstack Developer & Data
+              <span className="block dark:text-blue-300 font-semibold mt-1 text-xs">
+                <span className="block">• Fullstack Dev</span>
+                <span className="block">• Fullstack Data Scientist</span>
+                <span className="block">• AI Engineer</span>
+                <span className="block">• Finance</span>
               </span>
             </motion.li>
             <motion.li
@@ -98,8 +101,9 @@ export function About() {
               <span className="text-black/50 dark:text-gray-400 text-xs">
                 Education
               </span>{" "}
-              <span className="block dark:text-purple-300 font-semibold mt-1">
-                Informatics Engineering
+              <span className="block dark:text-purple-300 font-semibold mt-1 text-[11px] md:text-xs space-y-1">
+                <span className="block">• S1 Informatics Engineering</span>
+                <span className="block">• S1 Accounting</span>
               </span>
             </motion.li>
             <motion.li
