@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { clsx } from "clsx";
 import { ThemeToggle } from "./ThemeToggle";
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const items = [
   { href: "#hero", label: "Home" },
@@ -11,12 +12,15 @@ const items = [
   { href: "#experience", label: "Experience" },
   { href: "#portfolio", label: "Portfolio" },
   { href: "#skills", label: "Skills" },
+  { href: "#blog", label: "Blog" },
   { href: "#contact", label: "Contact" },
 ];
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -38,7 +42,7 @@ export function Navbar() {
       <div className="container-default h-16 flex items-center justify-between">
         {/* Logo */}
         <Link
-          href="#hero"
+          href="/"
           className="font-poppins font-bold text-sm md:text-base whitespace-nowrap bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent hover:scale-110 transition-transform"
         >
           @abimanyudans
@@ -46,17 +50,20 @@ export function Navbar() {
 
         {/* Desktop Navigation - Hidden on mobile */}
         <div className="hidden md:flex items-center gap-8 flex-1 justify-center">
-          {items.map((i) => (
-            <a
-              key={i.href}
-              href={i.href}
-              className="text-sm font-semibold group relative dark:text-cyan-100 text-black/70 hover:dark:text-cyan-300 hover:text-black transition-colors"
-              aria-label={`Jump to ${i.label}`}
-            >
-              {i.label}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-400 group-hover:w-full transition-all duration-300"></span>
-            </a>
-          ))}
+          {items.map((i) => {
+            const targetHref = isHomePage ? i.href : `/${i.href}`;
+            return (
+              <a
+                key={i.href}
+                href={targetHref}
+                className="text-sm font-semibold group relative dark:text-cyan-100 text-black/70 hover:dark:text-cyan-300 hover:text-black transition-colors"
+                aria-label={`Jump to ${i.label}`}
+              >
+                {i.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-400 group-hover:w-full transition-all duration-300"></span>
+              </a>
+            );
+          })}
         </div>
 
         {/* Right side - Theme toggle + Mobile menu */}
@@ -89,17 +96,20 @@ export function Navbar() {
       {mobileOpen && (
         <div className="md:hidden border-t dark:border-cyan-400/30 border-black/10 bg-gradient-to-b dark:from-slate-800 dark:to-slate-900 backdrop-blur-xl">
           <div className="container-default py-5 flex flex-col gap-2">
-            {items.map((i) => (
-              <a
-                key={i.href}
-                href={i.href}
-                onClick={() => setMobileOpen(false)}
-                className="px-4 py-3 rounded-lg text-sm font-semibold dark:text-cyan-100 dark:hover:text-cyan-300 dark:hover:bg-cyan-400/15 transition-all text-black/70 hover:text-black hover:bg-black/5"
-                aria-label={`Jump to ${i.label}`}
-              >
-                {i.label}
-              </a>
-            ))}
+            {items.map((i) => {
+              const targetHref = isHomePage ? i.href : `/${i.href}`;
+              return (
+                <a
+                  key={i.href}
+                  href={targetHref}
+                  onClick={() => setMobileOpen(false)}
+                  className="px-4 py-3 rounded-lg text-sm font-semibold dark:text-cyan-100 dark:hover:text-cyan-300 dark:hover:bg-cyan-400/15 transition-all text-black/70 hover:text-black hover:bg-black/5"
+                  aria-label={`Jump to ${i.label}`}
+                >
+                  {i.label}
+                </a>
+              );
+            })}
           </div>
         </div>
       )}

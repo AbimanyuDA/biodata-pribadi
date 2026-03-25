@@ -11,6 +11,7 @@ import { About } from "../components/sections/About";
 import { ExperienceAchievements } from "../components/sections/ExperienceAchievements";
 import { Portfolio } from "../components/sections/Portfolio";
 import { SkillsCertificates } from "../components/sections/SkillsCertificates";
+import { Blog } from "../components/sections/Blog";
 import { Contact } from "../components/sections/Contact";
 
 export default function Page() {
@@ -21,6 +22,7 @@ export default function Page() {
       <ExperienceAchievements />
       <Portfolio />
       <SkillsCertificates />
+      <Blog />
       <Contact />
     </main>
   );
