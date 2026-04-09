@@ -8,6 +8,9 @@ const skills = [
   { label: "SQL", value: 85 },
   { label: "Framer Motion", value: 78 },
   { label: "Tailwind CSS", value: 80 },
+  { label: "Golang", value: 85 },
+  { label: ".NET", value: 80 },
+  { label: "Laravel", value: 80 },
   { label: "and others", value: 0, isOther: true },
 ];
 

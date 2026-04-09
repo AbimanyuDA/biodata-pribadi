@@ -8,7 +8,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const projects = [
   {
     title: "Vanilla Royal",
-    role: "Web Design & Development",
+    role: "Web Design & Development (Full Stack)",
     url: "https://www.vanillaroyal.id/",
     img: "/images/portofolio/vanillaroyal.png",
     desc: "Landing page website perusahaan ekspor vanilla dengan desain premium dan product showcase.",
@@ -22,7 +22,7 @@ const projects = [
   },
   {
     title: "Best Coffee Nation",
-    role: "Web Design & Development",
+    role: "Web Design & Development (Ful Stack)",
     url: "http://bestcoffee.co.id/",
     img: "/images/portofolio/bestcoffee.png",
     desc: "Landing page perusahaan kopi untuk ekspor dengan informasi produk dan brand identity.",
@@ -144,6 +144,56 @@ const projects = [
       "AWS",
     ],
   },
+  {
+    title: "Pelindo Car Rent (P-Car)",
+    role: "Full Stack Development",
+    url: "#",
+    img: "/images/portofolio/pcar.png",
+    desc: "Aplikasi Pelindo Car Rent, sistem peminjaman kendaraan operasional Pelindo (P-Car).",
+    fullDesc:
+      "Aplikasi berbasis web untuk manajemen peminjaman kendaraan operasional Pelindo. Sistem ini mempermudah proses peminjaman (booking), pelacakan ketersediaan kendaraan (tracking), serta pencatatan dan pelaporan operasional armada secara digital.",
+    outputs: [
+      "Sistem reservasi dan booking kendaraan",
+      "Dashboard ketersediaan armada real-time",
+      "Sistem approval peminjaman berjenjang",
+      "Log penggunaan kendaraan & pelaporan",
+    ],
+    tools: ["React", ".NET", "PostgreSQL"],
+  },
+  {
+    title: "Integrated Logistic Platform (CargoInd)",
+    role: "Full Stack Development",
+    url: "#",
+    img: "/images/portofolio/cargoind.png",
+    desc: "Platform sistem logistik terintegrasi (CargoInd) yang mencakup modul Customer, DMS, WMS, dan TMS.",
+    fullDesc:
+      "Membangun platform logistik terintegrasi (CargoInd) untuk menghubungkan seluruh ekosistem supply chain perusahaan. Sistem ini menghubungkan portal pengguna (Customer) dengan sistem manajemen distribusi (DMS), manajemen gudang (WMS), dan manajemen transportasi (TMS) ke dalam satu platform yang terpusat.",
+    outputs: [
+      "Integrasi Customer Portal Dashboard",
+      "Modul Distribution Management System (DMS)",
+      "Modul Warehouse Management System (WMS)",
+      "Modul Transportation Management System (TMS)",
+      "Sentralisasi data logistik dan pergerakan barang",
+    ],
+    tools: ["Next.js", "TypeScript", "Golang", "PostgreSQL"],
+  },
+  {
+    title: "ERP System CV Abion Berkarya",
+    role: "Full Stack Development",
+    url: "#",
+    img: "/images/portofolio/erp-abion.png",
+    desc: "Sistem ERP UMKM terintegrasi meliputi Logistic, Supply Chain, Keuangan, Karyawan, dan implementasi sistem Penggajian.",
+    fullDesc:
+      "Pengembangan Enterprise Resource Planning (ERP) fungsionalitas hulu-ke-hilir (end-to-end) yang menyesuaikan skala bisnis CV Abion Berkarya (UMKM). Sistem mendigitalisasi aliran barang (logistic & supply chain), mengontrol dan merangkum keuangan korporasi (Finance), mengatur sumber daya manusia (HR), serta mengotomasisasi sistem penggajian bulanan (Payroll system) yang terhubung langsung ke modul Finance.",
+    outputs: [
+      "Modul Logistic & Supply Chain",
+      "Sistem Finance & pencatatan transaksi terintegrasi",
+      "Modul Human Resource (Manajemen data karyawan)",
+      "Sistem Penggajian (Payroll) otomatis",
+      "Dashboard operasional bisnis UMKM end-to-end",
+    ],
+    tools: ["Next.js", "Golang", "MySQL", "Tailwind CSS"],
+  },
 ];
 
 export function Portfolio() {
@@ -215,13 +265,12 @@ export function Portfolio() {
           {/* Main Carousel */}
           <div className="overflow-hidden rounded-lg">
             <motion.div
-              className={`grid gap-6 ${
-                screenSize === "mobile"
-                  ? "grid-cols-1"
-                  : screenSize === "tablet"
-                    ? "grid-cols-2"
-                    : "grid-cols-3"
-              }`}
+              className={`grid gap-6 ${screenSize === "mobile"
+                ? "grid-cols-1"
+                : screenSize === "tablet"
+                  ? "grid-cols-2"
+                  : "grid-cols-3"
+                }`}
               initial={false}
               animate={{
                 opacity: 1,
@@ -234,8 +283,8 @@ export function Portfolio() {
                   key={`${p.title}-${currentIndex}-${idx}`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    duration: 0.5, 
+                  transition={{
+                    duration: 0.5,
                     delay: idx * 0.1,
                     ease: "easeOut"
                   }}
@@ -341,11 +390,10 @@ export function Portfolio() {
                       setAutoPlay(false);
                       setTimeout(() => setAutoPlay(true), 6000);
                     }}
-                    className={`h-2 rounded-full transition-all ${
-                      idx === currentIndex
-                        ? "w-6 bg-gradient-to-r from-cyan-500 to-blue-500"
-                        : "w-2 bg-gray-400/50 dark:bg-white/20 hover:bg-gray-400"
-                    }`}
+                    className={`h-2 rounded-full transition-all ${idx === currentIndex
+                      ? "w-6 bg-gradient-to-r from-cyan-500 to-blue-500"
+                      : "w-2 bg-gray-400/50 dark:bg-white/20 hover:bg-gray-400"
+                      }`}
                     whileHover={{ scale: 1.2 }}
                     suppressHydrationWarning
                   />
@@ -382,149 +430,134 @@ export function Portfolio() {
       >
         {current && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.3 }}
-            className="overflow-hidden rounded-2xl shadow-2xl"
+            className="flex flex-col gap-0"
           >
-            <div className="grid md:grid-cols-2 gap-0">
-              {/* Image Side */}
-              <div className="relative overflow-hidden h-96 md:h-full bg-slate-800">
-                <img
-                  src={current.img}
-                  alt={current.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+            {/* ── Image Banner ── */}
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-800 shrink-0">
+              <img
+                src={current.img}
+                alt={current.title}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src =
+                    "https://placehold.co/800x450/1e293b/94a3b8?text=No+Preview";
+                }}
+              />
+              {/* Gradient overlay bottom */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
+              {/* Role badge floating over image bottom-left */}
+              <div className="absolute bottom-4 left-4 flex items-center gap-2">
+                <span className="px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-bold shadow-lg">
+                  {current.role}
+                </span>
+                {current.url && current.url !== "#" && (
+                  <span className="px-3 py-1 rounded-full bg-emerald-500/80 text-white text-xs font-bold shadow-lg">
+                    🚀 Live
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* ── Content Body ── */}
+            <div className="pt-6 pb-2 flex flex-col gap-5">
+
+              {/* Descriptions */}
+              <div>
+                <p className="text-gray-200 leading-relaxed text-sm md:text-base">
+                  {current.desc}
+                </p>
+                {(current as any).fullDesc && (
+                  <p className="text-gray-400 leading-relaxed text-sm mt-3 italic border-l-2 border-cyan-500/50 pl-3">
+                    {(current as any).fullDesc}
+                  </p>
+                )}
               </div>
 
-              {/* Content Side - Vibrant Background */}
-              <div className="p-8 md:p-10 flex flex-col justify-between bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+              {/* Deliverables */}
+              {(current as any).outputs && (
                 <div>
-                  {/* Badge */}
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-blue-400 text-slate-900 text-xs font-bold mb-5 shadow-lg shadow-cyan-400/50">
-                    <span className="text-lg">⭐</span>
-                    Featured Project
+                  <p className="text-xs font-bold text-cyan-400 mb-3 uppercase tracking-widest flex items-center gap-2">
+                    <span className="inline-block w-4 h-0.5 bg-cyan-400 rounded-full" />
+                    Deliverables
+                  </p>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    {(current as any).outputs.map(
+                      (output: string, idx: number) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2 text-sm text-gray-200 bg-white/5 rounded-lg px-3 py-2.5 border border-white/5"
+                        >
+                          <span className="text-cyan-400 font-bold mt-0.5">✓</span>
+                          <span>{output}</span>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              )}
+
+              {/* Info cards for projects without outputs */}
+              {!(current as any).outputs && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="p-4 rounded-xl bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 border border-cyan-400/40">
+                    <p className="text-xs font-bold text-cyan-400 mb-1 uppercase tracking-wider">Type</p>
+                    <p className="font-bold text-white">Web Project</p>
                   </div>
-
-                  {/* Title */}
-                  <h3 className="font-poppins text-4xl md:text-5xl font-black text-white mb-1 leading-tight drop-shadow-lg">
-                    {current.title}
-                  </h3>
-
-                  {/* Role */}
-                  <p className="text-sm md:text-base font-semibold text-cyan-300 mb-4">
-                    {current.role}
-                  </p>
-
-                  {/* Accent Line */}
-                  <div className="w-20 h-1.5 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 rounded-full mb-6 shadow-lg shadow-blue-400/70"></div>
-
-                  {/* Description */}
-                  <p className="text-base md:text-lg text-gray-100 leading-relaxed mb-8 font-medium">
-                    {current.desc}
-                  </p>
-
-                  {/* Full Description if available */}
-                  {(current as any).fullDesc && (
-                    <p className="text-sm md:text-base text-gray-200 leading-relaxed mb-6 italic">
-                      {(current as any).fullDesc}
-                    </p>
-                  )}
-
-                  {/* Outputs if available */}
-                  {(current as any).outputs && (
-                    <div className="mb-8">
-                      <p className="text-xs font-bold text-cyan-300 mb-3 uppercase tracking-wider">
-                        📊 Deliverables
-                      </p>
-                      <ul className="space-y-2">
-                        {(current as any).outputs.map(
-                          (output: string, idx: number) => (
-                            <li
-                              key={idx}
-                              className="text-sm text-gray-200 flex items-start gap-2"
-                            >
-                              <span className="text-cyan-400 font-bold">✓</span>
-                              {output}
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    </div>
-                  )}
-
-                  {/* Tools if available */}
-                  {(current as any).tools && (
-                    <div className="mb-8">
-                      <p className="text-xs font-bold text-cyan-300 mb-3 uppercase tracking-wider">
-                        🛠️ Tools
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {(current as any).tools.map(
-                          (tool: string, idx: number) => (
-                            <span
-                              key={idx}
-                              className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-500/30 to-purple-500/30 border border-blue-400/50 text-sm font-semibold text-blue-200"
-                            >
-                              {tool}
-                            </span>
-                          )
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Info Cards - More Vibrant */}
-                  {!(current as any).outputs && (
-                    <div className="grid grid-cols-2 gap-4 mb-8">
-                      <div className="p-4 rounded-xl bg-gradient-to-br from-cyan-500/30 to-cyan-600/20 border-2 border-cyan-400/60 hover:from-cyan-500/40 hover:to-cyan-600/30 transition-all">
-                        <p className="text-xs font-bold text-cyan-300 mb-2 uppercase tracking-wider">
-                          Type
-                        </p>
-                        <p className="font-bold text-cyan-100 text-lg">
-                          Web Project
-                        </p>
-                      </div>
-                      <div className="p-4 rounded-xl bg-gradient-to-br from-green-500/30 to-emerald-600/20 border-2 border-green-400/60 hover:from-green-500/40 hover:to-emerald-600/30 transition-all">
-                        <p className="text-xs font-bold text-green-300 mb-2 uppercase tracking-wider">
-                          Status
-                        </p>
-                        <p className="font-bold text-green-100 text-lg">
-                          🚀 Live
-                        </p>
-                      </div>
-                    </div>
-                  )}
+                  <div className="p-4 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-600/10 border border-green-400/40">
+                    <p className="text-xs font-bold text-green-400 mb-1 uppercase tracking-wider">Status</p>
+                    <p className="font-bold text-white">🚀 Live</p>
+                  </div>
                 </div>
+              )}
 
-                {/* Buttons */}
-                <div className="flex gap-3">
-                  {current.url && current.url !== "#" && (
-                    <motion.a
-                      href={current.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{
-                        scale: 1.08,
-                        boxShadow: "0 0 40px rgba(34, 197, 255, 0.6)",
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex-1 px-6 py-4 rounded-xl font-black text-white text-lg bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-600 hover:from-cyan-400 hover:via-blue-400 hover:to-blue-500 transition-all shadow-xl"
-                    >
-                      🌐 Visit Website
-                    </motion.a>
-                  )}
-                  <motion.button
-                    onClick={() => setOpen(false)}
-                    whileHover={{ scale: 1.08 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-6 py-4 rounded-xl border-2 border-gray-500 text-gray-100 hover:border-gray-300 hover:bg-white/5 font-bold transition-all"
+              {/* Tech Stack */}
+              {(current as any).tools && (
+                <div>
+                  <p className="text-xs font-bold text-cyan-400 mb-3 uppercase tracking-widest flex items-center gap-2">
+                    <span className="inline-block w-4 h-0.5 bg-cyan-400 rounded-full" />
+                    Tech Stack
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {(current as any).tools.map(
+                      (tool: string, idx: number) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/40 text-sm font-semibold text-blue-200 hover:border-blue-400/70 transition-colors"
+                        >
+                          {tool}
+                        </span>
+                      )
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Action buttons */}
+              <div className="flex gap-3 pt-2">
+                {current.url && current.url !== "#" && (
+                  <motion.a
+                    href={current.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.03, boxShadow: "0 0 30px rgba(34,197,255,0.5)" }}
+                    whileTap={{ scale: 0.97 }}
+                    className="flex-1 text-center px-6 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 transition-all shadow-lg text-sm md:text-base"
                   >
-                    Close
-                  </motion.button>
-                </div>
+                    🌐 Visit Website
+                  </motion.a>
+                )}
+                <motion.button
+                  onClick={() => setOpen(false)}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="px-6 py-3 rounded-xl border border-slate-600 text-gray-300 hover:border-slate-400 hover:text-white hover:bg-white/5 font-semibold transition-all text-sm md:text-base"
+                >
+                  Tutup
+                </motion.button>
               </div>
             </div>
           </motion.div>

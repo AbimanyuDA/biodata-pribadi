@@ -59,7 +59,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 }}
-                  className="text-3xl md:text-4xl font-bold text-white tracking-tight"
+                  className="text-xl md:text-2xl font-bold text-white tracking-tight line-clamp-2"
                 >
                   {title}
                 </motion.h2>
