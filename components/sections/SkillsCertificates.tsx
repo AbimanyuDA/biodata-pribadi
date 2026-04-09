@@ -11,6 +11,7 @@ const skills = [
   { label: "Golang", value: 85 },
   { label: ".NET", value: 80 },
   { label: "Laravel", value: 80 },
+  { label: "Flutter / Dart", value: 75 },
   { label: "and others", value: 0, isOther: true },
 ];
 

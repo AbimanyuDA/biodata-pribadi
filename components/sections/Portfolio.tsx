@@ -199,17 +199,18 @@ const projects = [
     role: "Full Stack Development",
     url: "#",
     img: "/images/portofolio/kasir-warung.png",
-    desc: "Aplikasi kasir digital untuk UMKM Warung Jeng Fe dengan fitur transaksi penjualan, pencatatan pengeluaran, laporan akhir, dan rekap analitik bisnis.",
+    desc: "Aplikasi kasir digital untuk UMKM Warung Jeng Fe — tersedia versi web & mobile (Flutter), dengan fitur transaksi penjualan, pencatatan pengeluaran, laporan akhir, dan rekap analitik bisnis.",
     fullDesc:
-      "Membangun sistem kasir berbasis web yang dirancang khusus untuk kebutuhan operasional UMKM warung makan. Sistem mencakup proses transaksi penjualan harian, pencatatan pengeluaran operasional, rekap laporan laba-rugi, dan analisis ringkasan keuangan bisnis secara berkala untuk membantu pemilik dalam pengambilan keputusan.",
+      "Membangun sistem kasir full-stack (web + mobile) untuk kebutuhan operasional UMKM warung makan. Platform web dibangun dengan Next.js untuk pengelolaan dari sisi admin, sementara aplikasi mobile Flutter/Dart digunakan oleh kasir di lapangan. Sistem mencakup transaksi penjualan harian, pencatatan pengeluaran operasional, rekap laporan laba-rugi, dan analisis ringkasan keuangan bisnis secara berkala.",
     outputs: [
+      "Aplikasi mobile kasir (Flutter/Dart) untuk Android",
       "Modul kasir & transaksi penjualan real-time",
       "Pencatatan dan kategorisasi pengeluaran operasional",
       "Laporan harian, mingguan, dan bulanan otomatis",
       "Rekap laba-rugi & analitik ringkasan keuangan",
       "Dashboard monitoring performa bisnis UMKM",
     ],
-    tools: ["Next.js", "Node.js", "MySQL", "Tailwind CSS"],
+    tools: ["Next.js", "Flutter", "Dart", "Node.js", "MySQL"],
   },
 ];
 
