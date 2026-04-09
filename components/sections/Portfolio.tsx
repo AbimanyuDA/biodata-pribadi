@@ -216,7 +216,24 @@ const projects = [
 
 export function Portfolio() {
   const [open, setOpen] = useState(false);
-  const [current, setCurrent] = useState<(typeof projects)[0] | null>(null);
+  const [modalIdx, setModalIdx] = useState<number>(0);
+  const current = open ? projects[modalIdx] : null;
+
+  const openModal = (idx: number) => { setModalIdx(idx); setOpen(true); };
+  const goPrev = () => setModalIdx((i) => (i - 1 + projects.length) % projects.length);
+  const goNext = () => setModalIdx((i) => (i + 1) % projects.length);
+
+  // Keyboard: ← prev, → next, Esc close
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") goPrev();
+      else if (e.key === "ArrowRight") goNext();
+      else if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
   const [screenSize, setScreenSize] = useState<"mobile" | "tablet" | "desktop">(
@@ -309,10 +326,7 @@ export function Portfolio() {
                 >
                   <motion.button
                     suppressHydrationWarning
-                    onClick={() => {
-                      setCurrent(p);
-                      setOpen(true);
-                    }}
+                    onClick={() => openModal(currentIndex * itemsPerSlide + idx)}
                     whileHover={{ y: -12, transition: { duration: 0.3 } }}
                     className="text-left rounded-2xl overflow-hidden cursor-pointer group relative h-full"
                   >
@@ -444,7 +458,7 @@ export function Portfolio() {
       <Modal
         isOpen={open}
         onClose={() => setOpen(false)}
-        title={current?.title || "Project Details"}
+        title={`${modalIdx + 1} / ${projects.length} — ${current?.title || "Project Details"}`}
       >
         {current && (
           <motion.div
@@ -454,20 +468,45 @@ export function Portfolio() {
             transition={{ duration: 0.3 }}
             className="flex flex-col gap-0"
           >
-            {/* ── Image Banner ── */}
+            {/* ── Image Banner + Prev/Next nav ── */}
             <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-800 shrink-0">
-              <img
+              <motion.img
+                key={current.img}
                 src={current.img}
                 alt={current.title}
                 className="w-full h-full object-cover"
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src =
                     "https://placehold.co/800x450/1e293b/94a3b8?text=No+Preview";
                 }}
               />
-              {/* Gradient overlay bottom */}
+              {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
-              {/* Role badge floating over image bottom-left */}
+
+              {/* Prev button */}
+              <motion.button
+                onClick={(e) => { e.stopPropagation(); goPrev(); }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 border border-white/20 text-white hover:bg-cyan-500/70 transition-all backdrop-blur-sm"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </motion.button>
+
+              {/* Next button */}
+              <motion.button
+                onClick={(e) => { e.stopPropagation(); goNext(); }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 border border-white/20 text-white hover:bg-cyan-500/70 transition-all backdrop-blur-sm"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </motion.button>
+
+              {/* Role badge bottom-left */}
               <div className="absolute bottom-4 left-4 flex items-center gap-2">
                 <span className="px-3 py-1 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs font-bold shadow-lg">
                   {current.role}
