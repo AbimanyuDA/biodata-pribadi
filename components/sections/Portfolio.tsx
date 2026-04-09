@@ -41,6 +41,24 @@ const projects = [
     tools: ["Next.js", "Golang", "MySQL", "Tailwind CSS"],
   },
   {
+    title: "ERP Koperasi (Customizable)",
+    role: "Full Stack Development",
+    url: "#",
+    img: "/images/portofolio/erp-koperasi.png",
+    desc: "Sistem ERP Koperasi yang dapat dikustomisasi sesuai kebutuhan organisasi, mencakup manajemen simpan pinjam, keuangan, anggota, dan pelaporan.",
+    fullDesc:
+      "Membangun platform ERP berbasis web yang dirancang fleksibel dan modular untuk memenuhi kebutuhan koperasi dengan berbagai jenis dan skala. Sistem menyediakan manajemen simpan-pinjam, pembukuan keuangan, pengelolaan data anggota, serta modul yang dapat diaktifkan/nonaktifkan sesuai kebutuhan organisasi koperasi.",
+    outputs: [
+      "Modul Simpan Pinjam & cicilan anggota",
+      "Manajemen data anggota & riwayat transaksi",
+      "Pembukuan keuangan & laporan neraca koperasi",
+      "Sistem modul kustomisasi per kebutuhan koperasi",
+      "Dashboard laporan keuangan & analitik kinerja",
+      "Manajemen Rapat Anggota Tahunan (RAT)",
+    ],
+    tools: ["Next.js", "Node.js", "PostgreSQL", "Tailwind CSS", "Golang"],
+  },
+  {
     title: "Pelindo Car Rent (P-Car)",
     role: "Full Stack Development",
     url: "#",
