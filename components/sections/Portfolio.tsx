@@ -194,6 +194,23 @@ const projects = [
     ],
     tools: ["Next.js", "Golang", "MySQL", "Tailwind CSS"],
   },
+  {
+    title: "Aplikasi Kasir Warung Jeng Fe",
+    role: "Full Stack Development",
+    url: "#",
+    img: "/images/portofolio/kasir-warung.png",
+    desc: "Aplikasi kasir digital untuk UMKM Warung Jeng Fe dengan fitur transaksi penjualan, pencatatan pengeluaran, laporan akhir, dan rekap analitik bisnis.",
+    fullDesc:
+      "Membangun sistem kasir berbasis web yang dirancang khusus untuk kebutuhan operasional UMKM warung makan. Sistem mencakup proses transaksi penjualan harian, pencatatan pengeluaran operasional, rekap laporan laba-rugi, dan analisis ringkasan keuangan bisnis secara berkala untuk membantu pemilik dalam pengambilan keputusan.",
+    outputs: [
+      "Modul kasir & transaksi penjualan real-time",
+      "Pencatatan dan kategorisasi pengeluaran operasional",
+      "Laporan harian, mingguan, dan bulanan otomatis",
+      "Rekap laba-rugi & analitik ringkasan keuangan",
+      "Dashboard monitoring performa bisnis UMKM",
+    ],
+    tools: ["Next.js", "Node.js", "MySQL", "Tailwind CSS"],
+  },
 ];
 
 export function Portfolio() {
