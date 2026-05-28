@@ -3,10 +3,16 @@ import React from "react";
 export const blogPosts = [
   {
     id: "gods-love-through-me",
-    title: "God’s Love through Me",
+    title: {
+      id: "Kasih Tuhan Melalui Saya",
+      en: "God’s Love through Me",
+    },
     date: "March 2026",
     tags: ["Experience", "Reflection", "Business"],
-    excerpt: "Tahun lalu, saya mencoba melangkah lebih jauh dengan menjajaki peluang ekspor biji kopi lokal ke pasar luar negeri...",
+    excerpt: {
+      id: "Tahun lalu, saya mencoba melangkah lebih jauh dengan menjajaki peluang ekspor biji kopi lokal ke pasar luar negeri...",
+      en: "Last year, I tried to go further by exploring opportunities to export local coffee beans to overseas markets...",
+    },
     content: (
       <div className="space-y-8 text-lg md:text-xl leading-relaxed text-slate-800 dark:text-slate-200">
         <div className="bg-cyan-500/10 dark:bg-cyan-900/20 p-6 md:p-8 rounded-2xl border border-cyan-500/20 dark:border-cyan-500/30 mb-8 backdrop-blur-sm">

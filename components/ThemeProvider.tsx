@@ -29,7 +29,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const prefersDark =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setTheme(prefersDark ? "dark" : "dark");
+    setTheme(prefersDark ? "dark" : "light");
   }, []);
 
   useEffect(() => {

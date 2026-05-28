@@ -1,134 +1,236 @@
 "use client";
-import { motion } from "framer-motion";
-import { revealOnScroll, scaleIn } from "../../utils/animations";
+import React, { memo } from "react";
+import { FileText, Code, Award, Globe, ArrowUpRight, Sparkles } from "lucide-react";
+import { useLanguage } from "../LanguageProvider";
+import { t, tx } from "../../utils/translations";
+
+const Header = memo(({ lang }: { lang: string }) => (
+  <div className="text-center mb-8 px-4">
+    <h2
+      className="text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]"
+      data-aos="zoom-in-up"
+      data-aos-duration="600"
+    >
+      {tx(t.about.title, lang as any)}
+    </h2>
+    <p
+      className="mt-2 text-gray-400 max-w-2xl mx-auto text-sm sm:text-base flex items-center justify-center gap-2"
+      data-aos="zoom-in-up"
+      data-aos-duration="800"
+    >
+      <Sparkles className="w-4 h-4 text-purple-400" />
+      {tx(t.about.subtitle, lang as any)}
+      <Sparkles className="w-4 h-4 text-purple-400" />
+    </p>
+  </div>
+));
+Header.displayName = "Header";
+
+
+const ProfileImage = memo(() => (
+  <div className="flex justify-center lg:justify-end items-center py-4 lg:py-0">
+    <div className="relative group" data-aos="fade-up" data-aos-duration="1000">
+      {/* Optimized gradient backgrounds - disabled on mobile, active on desktop */}
+      <div className="absolute -inset-6 opacity-20 z-0 hidden sm:block">
+        <div className="absolute inset-0 bg-gradient-to-r from-violet-600 via-indigo-500 to-purple-600 rounded-full blur-2xl animate-spin-slower" />
+        <div className="absolute inset-0 bg-gradient-to-l from-fuchsia-500 via-rose-500 to-pink-600 rounded-full blur-2xl animate-pulse-slow opacity-50" />
+      </div>
+
+      <div className="relative">
+        <div className="w-64 h-64 sm:w-72 sm:h-72 lg:w-80 lg:h-80 rounded-full overflow-hidden shadow-[0_0_30px_rgba(120,119,198,0.25)] transform transition-all duration-700 group-hover:scale-105">
+          <div className="absolute inset-0 border-4 border-white/20 rounded-full z-20 transition-all duration-700 group-hover:border-white/40 group-hover:scale-105" />
+          
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 z-10 transition-opacity duration-700 group-hover:opacity-0 hidden sm:block" />
+          
+          <img
+            src="/images/about/abimanyu.jpeg"
+            alt="Abimanyu Danendra"
+            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
+            loading="lazy"
+            onError={(e) => {
+              // Fallback if image fails to load
+              e.currentTarget.src = "https://placehold.co/400x400/1e293b/94a3b8?text=Abimanyu";
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+));
+ProfileImage.displayName = "ProfileImage";
+
+interface StatCardProps {
+  icon: React.ComponentType<any>;
+  color: string;
+  value: string | number;
+  label: string;
+  description: string;
+  animation: string;
+}
+
+const StatCard = memo(({ icon: Icon, color, value, label, description, animation }: StatCardProps) => (
+  <div data-aos={animation} data-aos-duration={1300} className="relative group h-full">
+    <div
+      className="relative z-10 backdrop-blur-lg rounded-2xl p-5 border overflow-hidden transition-all duration-300 hover:scale-105 hover:border-indigo-500/40 flex flex-col justify-between h-full"
+      style={{ backgroundColor: "var(--bg-card)", borderColor: "var(--border)" }}
+    >
+      <div className={`absolute -z-10 inset-0 bg-gradient-to-br ${color} opacity-5 group-hover:opacity-10 transition-opacity duration-300`}></div>
+
+      <div className="flex items-center justify-between mb-3">
+        <div
+          className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 group-hover:rotate-6"
+          style={{ backgroundColor: "var(--glow-primary)" }}
+        >
+          <Icon className="w-6 h-6" style={{ color: "#6366f1" }} />
+        </div>
+        <span className="text-3xl font-bold" style={{ color: "var(--text-primary)" }}>
+          {value}
+        </span>
+      </div>
+
+      <div>
+        <p className="text-xs uppercase tracking-wider mb-1" style={{ color: "var(--text-secondary)" }}>
+          {label}
+        </p>
+        <div className="flex items-center justify-between">
+          <p className="text-[11px] leading-tight" style={{ color: "var(--text-muted)" }}>
+            {description}
+          </p>
+          <ArrowUpRight className="w-3.5 h-3.5 transition-colors" style={{ color: "var(--text-muted)" }} />
+        </div>
+      </div>
+    </div>
+  </div>
+));
+StatCard.displayName = "StatCard";
 
 export function About() {
+  const { lang } = useLanguage();
+
+  const statsData = [
+    {
+      icon: Code,
+      color: "from-[#6366f1] to-[#a855f7]",
+      value: 12,
+      label: tx(t.about.stat1Label, lang),
+      description: "Innovative digital solutions crafted",
+      animation: "fade-right",
+    },
+    {
+      icon: Award,
+      color: "from-[#a855f7] to-[#6366f1]",
+      value: 5,
+      label: "Awards",
+      description: "Competitions and entrepreneurship",
+      animation: "fade-up",
+    },
+    {
+      icon: Globe,
+      color: "from-[#6366f1] to-[#a855f7]",
+      value: "2+",
+      label: tx(t.about.stat2Label, lang),
+      description: "AI, fullstack dev & analytics",
+      animation: "fade-left",
+    },
+  ];
+
   return (
-    <section id="about" className="section min-h-screen flex items-center">
-      <div className="grid md:grid-cols-2 gap-8 items-center glass-panel p-8 md:p-10">
-        <motion.div
-          variants={scaleIn}
-          initial="initial"
-          whileInView="animate"
-          viewport={{ once: true }}
-          className="relative"
-        >
-          <div className="absolute -inset-1 bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-500 rounded-2xl opacity-30 blur-lg group-hover:opacity-50 transition-opacity duration-300" />
-          <div className="relative aspect-square rounded-2xl overflow-hidden bg-black/5 dark:bg-white/10 border border-white/20">
-            <motion.img
-              alt="Profile photo"
-              src="/images/about/abimanyu.jpeg"
-              className="w-full h-full object-cover"
-              animate={{ y: [0, -12, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              whileHover={{ scale: 1.05 }}
-            />
-            {/* Shine effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-20"
-              animate={{ x: [-100, 100] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
+    <section id="about" className="section bg-[#030014] text-white">
+      <Header lang={lang} />
+
+      <div className="w-full mx-auto pt-4 md:pt-8 relative">
+        {/* Stack: photo first on mobile, then text. Side-by-side on lg */}
+        <div className="flex flex-col lg:grid lg:grid-cols-[55%_45%] gap-8 lg:gap-16 items-center">
+
+          {/* Profile Photo — shows first on mobile (order-1), right on desktop */}
+          <div className="order-1 lg:order-2 w-full flex justify-center">
+            <ProfileImage />
           </div>
-        </motion.div>
-        <motion.div
-          variants={revealOnScroll}
-          initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true }}
-        >
-          <h2 className="section-title dark:text-white mb-6">
-            About / Biodata
-          </h2>
-          <motion.p
-            className="text-black/75 dark:text-gray-300 leading-relaxed mb-6"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            Business-Oriented Full-Stack Developer & AI Engineer dengan minat kuat pada
-            finance, investasi, dan full stack data scientis. Berpengalaman mengembangkan
-            solusi digital end-to-end, merancang kapabilitas artificial intelligence,
-            mengelola dan menganalisis data keuangan, serta menghubungkan teknologi dengan
-            strategi bisnis untuk mendukung pengambilan keputusan berbasis data.
-          </motion.p>
-          <motion.ul
-            className="grid grid-cols-2 gap-4 text-sm mb-6"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <motion.li
-              className="p-4 rounded-xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 border border-cyan-200/30 dark:border-cyan-500/20 hover:border-cyan-400/50 dark:hover:border-cyan-500/50 transition-all"
-              whileHover={{
-                y: -2,
-                boxShadow: "0 0 20px rgba(34, 211, 238, 0.3)",
-              }}
-            >
-              <span className="text-black/50 dark:text-gray-400 text-xs">
-                Location
-              </span>{" "}
-              <span className="block dark:text-cyan-300 font-semibold mt-1">
-                Surabaya, Indonesia
+
+          {/* Biography — shows second on mobile (order-2), left on desktop */}
+          <div className="order-2 lg:order-1 space-y-5 text-center lg:text-left">
+            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold">
+              <span
+                className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]"
+                data-aos="fade-up"
+                data-aos-duration="1000"
+              >
+                {tx(t.about.greeting, lang)}
               </span>
-            </motion.li>
-            <motion.li
-              className="p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-200/30 dark:border-blue-500/20 hover:border-blue-400/50 dark:hover:border-blue-500/50 transition-all"
-              whileHover={{
-                y: -2,
-                boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)",
-              }}
-            >
-              <span className="text-black/50 dark:text-gray-400 text-xs">
-                Role
-              </span>{" "}
-              <span className="block dark:text-blue-300 font-semibold mt-1 text-xs">
-                <span className="block">• Fullstack Dev</span>
-                <span className="block">• Fullstack Data Scientist</span>
-                <span className="block">• AI Engineer</span>
-                <span className="block">• Finance</span>
+              <span
+                className="block mt-1 text-2xl sm:text-3xl font-extrabold"
+                style={{ color: "var(--text-primary)" }}
+                data-aos="fade-up"
+                data-aos-duration="1300"
+              >
+                Abimanyu Danendra Andarfebano
               </span>
-            </motion.li>
-            <motion.li
-              className="p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-200/30 dark:border-purple-500/20 hover:border-purple-400/50 dark:hover:border-purple-500/50 transition-all"
-              whileHover={{
-                y: -2,
-                boxShadow: "0 0 20px rgba(168, 85, 247, 0.3)",
-              }}
+            </h3>
+
+            <p
+              className="text-sm sm:text-base leading-relaxed"
+              style={{ color: "var(--text-secondary)" }}
+              data-aos="fade-up"
+              data-aos-duration="1500"
             >
-              <span className="text-black/50 dark:text-gray-400 text-xs">
-                Education
-              </span>{" "}
-              <span className="block dark:text-purple-300 font-semibold mt-1 text-[11px] md:text-xs space-y-1">
-                <span className="block">• S1 Informatics Engineering</span>
-                <span className="block">• S1 Accounting</span>
-              </span>
-            </motion.li>
-            <motion.li
-              className="p-4 rounded-xl bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-200/30 dark:border-green-500/20 hover:border-green-400/50 dark:hover:border-green-500/50 transition-all"
-              whileHover={{
-                y: -2,
-                boxShadow: "0 0 20px rgba(34, 197, 94, 0.3)",
+              {tx(t.about.bio, lang)}
+            </p>
+
+            {/* Quote Bubble */}
+            <div
+              className="relative rounded-2xl p-4 backdrop-blur-md overflow-hidden border"
+              style={{
+                background: "linear-gradient(135deg, rgba(99,102,241,0.08), transparent, rgba(168,85,247,0.08))",
+                borderColor: "rgba(99,102,241,0.35)",
               }}
+              data-aos="fade-up"
+              data-aos-duration="1700"
             >
-              <span className="text-black/50 dark:text-gray-400 text-xs">
-                Email
-              </span>{" "}
-              <span className="block dark:text-green-300 font-semibold mt-1 truncate text-xs">
-                abimanyudans@gmail.com
-              </span>
-            </motion.li>
-          </motion.ul>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            viewport={{ once: true }}
-            className="h-1 w-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
-          />
-        </motion.div>
+              <div className="absolute top-2 right-4 w-10 h-10 bg-[#6366f1]/10 rounded-full blur-xl"></div>
+              <div className="absolute top-3 left-3 text-[#6366f1] opacity-40">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
+                </svg>
+              </div>
+              <blockquote className="italic font-medium text-xs sm:text-sm pl-6 relative z-10" style={{ color: "var(--text-secondary)" }}>
+                "{tx(t.about.quote, lang)}"
+              </blockquote>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full justify-center lg:justify-start">
+              <a
+                href="mailto:abimanyudans@gmail.com"
+                className="w-full sm:w-auto"
+                data-aos="fade-up"
+                data-aos-duration="800"
+              >
+                <button className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white font-semibold transition-all duration-300 hover:scale-[1.03] flex items-center justify-center gap-2 shadow-lg hover:shadow-indigo-500/20 text-sm">
+                  <FileText className="w-4 h-4" /> {tx(t.about.cta1, lang)}
+                </button>
+              </a>
+              <a
+                href="#portfolio"
+                className="w-full sm:w-auto"
+                data-aos="fade-up"
+                data-aos-duration="1000"
+              >
+                <button className="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-[#a855f7]/40 text-[#c084fc] font-semibold transition-all duration-300 hover:scale-[1.03] flex items-center justify-center gap-2 hover:bg-[#a855f7]/10 text-sm">
+                  <Code className="w-4 h-4" /> {tx(t.about.cta2, lang)}
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <a href="#portfolio" className="block mt-10 sm:mt-12">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5">
+            {statsData.map((stat) => (
+              <StatCard key={stat.label} {...stat} />
+            ))}
+          </div>
+        </a>
       </div>
     </section>
   );

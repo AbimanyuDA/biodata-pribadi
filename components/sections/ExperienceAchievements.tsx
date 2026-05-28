@@ -1,137 +1,107 @@
 "use client";
-import { motion } from "framer-motion";
-import { fadeUp } from "../../utils/animations";
+import { useLanguage } from "../LanguageProvider";
+import { useTheme } from "../ThemeProvider";
+import { t, tx } from "../../utils/translations";
 
-const items = [
-  {
-    year: "2025",
-    title: "Awardee Pelindo Prestasi Scholarship",
-    category: "Scholarship",
-    detail:
-      "Program beasiswa dan pengembangan diri yang diselenggarakan oleh PT Pelabuhan Indonesia (Persero) untuk mencetak talenta muda unggul, menawarkan bantuan biaya pendidikan, dana skripsi, pelatihan pengembangan diri (soft skills, bahasa Inggris, literasi keuangan, keahlian IT), serta kesempatan networking dengan Pelindo dan sesama penerima beasiswa.",
-    highlight: "Beasiswa Bergengsi",
-  },
-  {
-    year: "2025",
-    title:
-      "Awardee Higher Education for Technology and Innovation Student Youngpreneurship",
-    category: "Entrepreneurship",
-    detail:
-      "Program inkubasi dan pendanaan dari Institut Teknologi Sepuluh Nopember (ITS) untuk mahasiswa yang memiliki startup inovatif berbasis teknologi, memberikan modal, mentoring intensif dari pakar industri, serta jejaring bisnis untuk mempercepat pengembangan bisnis mereka menuju kesuksesan wirausaha muda.",
-    highlight: "Startup Funding",
-  },
-  {
-    year: "2024",
-    title: "Awardee ITS Youth Technopreneurship",
-    category: "Entrepreneurship",
-    detail:
-      "Program tahunan dari Institut Teknologi Sepuluh Nopember (ITS) yang bertujuan melahirkan wirausahawan muda berbasis teknologi (technopreneur) dengan memberikan pendanaan, pendampingan mentor profesional, dan fasilitas untuk mewujudkan ide startup teknologi inovatif menjadi bisnis nyata, lengkap dengan konversi SKS bagi mahasiswa yang berpartisipasi. ",
-    highlight: "Accelerator Program",
-  },
-  {
-    year: "2024",
-    title: "Chief Operational Officer Flexoo",
-    category: "Leadership",
-    detail:
-      "Menjabat sebagai COO di Flexoo, startup berbasis teknologi yang berada di bawah naungan Teknik Informatika ITS, berfokus pada penyediaan jasa dan solusi teknologi digital. Flexoo melayani pengembangan website, machine learning, pengembangan game, komputer dan jaringan, serta berbagai layanan teknologi lainnya yang disesuaikan dengan kebutuhan klien.",
-    highlight: "Tech Solutions",
-  },
-  {
-    year: "2024",
-    title: "Chief Finance Officer CV Abion Berkarya",
-    category: "Leadership",
-    detail:
-      "Menjabat sebagai CFO dan juga Tech officer di CV Abion Berkarya, perusahaan yang bergerak di bidang cargo dan logistik. Bertanggung jawab atas pengelolaan keuangan dan pengembangan sistem terintegrasi untuk meningkatkan efisiensi operasional, penyusunan laporan keuangan, pembukuan yang rapi, serta kesiapan data untuk pelaporan pajak (SPT).",
-    highlight: "Finance & Tech",
-  },
-];
+const categoryColors: Record<string, string> = {
+  // ID categories
+  Beasiswa: "from-yellow-400/20 to-amber-500/20 border-yellow-400/30 text-yellow-300",
+  Wirausaha: "from-emerald-400/20 to-green-500/20 border-emerald-400/30 text-emerald-300",
+  Kepemimpinan: "from-blue-400/20 to-indigo-500/20 border-blue-400/30 text-blue-300",
+  // EN categories
+  Scholarship: "from-yellow-400/20 to-amber-500/20 border-yellow-400/30 text-yellow-300",
+  Entrepreneurship: "from-emerald-400/20 to-green-500/20 border-emerald-400/30 text-emerald-300",
+  Leadership: "from-blue-400/20 to-indigo-500/20 border-blue-400/30 text-blue-300",
+};
 
 export function ExperienceAchievements() {
+  const { lang } = useLanguage();
+  const { theme } = useTheme();
+  const isLight = theme === "light";
+  const items = t.experience.items;
+
   return (
-    <section id="experience" className="section min-h-screen flex items-center">
-      <div className="glass-panel p-8 md:p-10 w-full">
-        <h2 className="section-title dark:text-white">
-          Experience & Achievements
-        </h2>
-        <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-400 via-blue-500 to-purple-600 rounded-full" />
+    <section
+      id="experience"
+      className="section text-white"
+      style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)" }}
+    >
+      <div className="w-full">
+        {/* Header */}
+        <div className="text-center mb-12 sm:mb-16" data-aos="fade-up" data-aos-duration="1000">
+          <h2 className="text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">
+            {tx(t.experience.title, lang)}
+          </h2>
+          <p className="text-gray-400 max-w-xl mx-auto text-sm sm:text-base mt-2">
+            {tx(t.experience.subtitle, lang)}
+          </p>
+        </div>
 
-          <div className="grid gap-8 md:gap-12">
-            {items.map((it, idx) => (
-              <motion.div
-                key={it.title}
-                variants={fadeUp}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true }}
-                className={`relative md:grid md:grid-cols-2 md:gap-12 items-stretch`}
-              >
-                {/* Timeline dot */}
-                <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 border-4 border-slate-900 dark:border-slate-900 top-2 md:top-1/2 md:-translate-y-1/2 z-10 shadow-lg shadow-cyan-400/50" />
+        {/* Timeline */}
+        <div className="relative max-w-3xl mx-auto">
+          {/* Vertical line */}
+          <div className="absolute left-5 sm:left-6 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#6366f1] via-[#a855f7] to-[#6366f1] opacity-30" />
 
-                {/* Left Content Card */}
+          <div className="space-y-8 sm:space-y-10">
+            {items.map((it, idx) => {
+              const category = tx(it.category, lang);
+              return (
                 <div
-                  className={`md:col-start-${
-                    (idx % 2) + 1
-                  } p-6 md:p-8 rounded-xl border-2 dark:border-cyan-400/30 bg-gradient-to-br dark:from-slate-800/60 dark:to-slate-900/60 hover:dark:from-slate-800 hover:dark:to-slate-900 transition-all hover:shadow-xl hover:shadow-cyan-400/20 ml-6 md:ml-0`}
+                  key={idx}
+                  className="relative pl-14 sm:pl-16"
+                  data-aos="fade-up"
+                  data-aos-duration="800"
+                  data-aos-delay={idx * 80}
                 >
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-cyan-500/30 to-blue-500/30 dark:text-cyan-300 border dark:border-cyan-400/50">
-                      {it.year}
-                    </span>
-                  </div>
+                  {/* Timeline dot */}
+                  <div className="absolute left-[14px] sm:left-[18px] top-5 w-4 h-4 rounded-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] border-2 border-[#030014] shadow-[0_0_12px_rgba(99,102,241,0.6)] z-10" />
 
-                  <h3 className="font-poppins font-bold text-lg md:text-xl dark:text-white mb-2 group-hover:text-cyan-400 transition-colors">
-                    {it.title}
-                  </h3>
+                  {/* Card */}
+                  <div
+                    className="group relative rounded-2xl border p-5 sm:p-6 backdrop-blur-lg transition-all duration-300 hover:scale-[1.01]"
+                    style={{
+                      backgroundColor: "var(--bg-card)",
+                      borderColor: "var(--border)",
+                    }}
+                  >
+                    {/* Top row */}
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#6366f1]/15 text-indigo-300 border border-[#6366f1]/30">
+                        {it.year}
+                      </span>
+                      <span
+                        className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border bg-gradient-to-r ${
+                          categoryColors[category] ?? "from-gray-400/20 to-gray-500/20 border-gray-400/30 text-gray-300"
+                        }`}
+                      >
+                        {category}
+                      </span>
+                    </div>
 
-                  <p className="text-sm md:text-base dark:text-gray-300 leading-relaxed">
-                    {it.detail}
-                  </p>
+                    {/* Title */}
+                    <h3
+                      className="font-bold text-base sm:text-lg md:text-xl mb-2 leading-tight group-hover:text-indigo-300 transition-colors"
+                      style={{ color: "var(--text-primary)" }}
+                    >
+                      {tx(it.title, lang)}
+                    </h3>
 
-                  {/* Accent bar */}
-                  <div className="mt-4 pt-4 border-t dark:border-cyan-400/20">
-                    <div className="w-8 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full" />
+                    {/* Detail */}
+                    <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+                      {tx(it.detail, lang)}
+                    </p>
+
+                    {/* Bottom bar */}
+                    <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between">
+                      <span className="text-[10px] uppercase tracking-widest text-indigo-400 font-semibold">
+                        {tx(it.highlight, lang)}
+                      </span>
+                      <div className="w-8 h-[2px] bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-full" />
+                    </div>
                   </div>
                 </div>
-
-                {/* Right Info Card */}
-                <div
-                  className={`hidden md:flex md:col-start-${
-                    idx % 2 === 0 ? 2 : 1
-                  } flex-col gap-4`}
-                >
-                  {/* Category Card */}
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    className="p-6 rounded-xl border-2 dark:border-purple-400/30 bg-gradient-to-br dark:from-purple-900/30 dark:to-pink-900/20 hover:dark:from-purple-900/50 hover:dark:to-pink-900/30 transition-all"
-                  >
-                    <p className="text-xs font-bold dark:text-purple-300 uppercase tracking-wider mb-2">
-                      Category
-                    </p>
-                    <p className="text-lg font-bold dark:text-white">
-                      {it.category}
-                    </p>
-                    <div className="mt-3 h-1 w-8 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full"></div>
-                  </motion.div>
-
-                  {/* Highlight Card */}
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    className="p-6 rounded-xl border-2 dark:border-green-400/30 bg-gradient-to-br dark:from-green-900/30 dark:to-emerald-900/20 hover:dark:from-green-900/50 hover:dark:to-emerald-900/30 transition-all flex-1 flex flex-col justify-center"
-                  >
-                    <p className="text-xs font-bold dark:text-green-300 uppercase tracking-wider mb-2">
-                      Highlight
-                    </p>
-                    <p className="text-lg font-bold dark:text-white">
-                      {it.highlight}
-                    </p>
-                    <div className="mt-3 h-1 w-8 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full"></div>
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

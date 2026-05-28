@@ -5,6 +5,7 @@ import { Navbar } from "../components/Navbar";
 import { BackgroundArt } from "../components/BackgroundArt";
 import { ThemeProvider } from "../components/ThemeProvider";
 import { ScrollProgress } from "../components/ScrollProgress";
+import { LanguageProvider } from "../components/LanguageProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const poppins = Poppins({
@@ -14,8 +15,16 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Biodata Pribadi — Portfolio",
-  description: "A modern digital CV crafted as an interactive art piece.",
+  title: "Abimanyu Danendra — Portfolio",
+  description: "AI Engineer, Full-Stack Developer & Data Scientist. Menciptakan solusi digital inovatif dengan AI, analisis data, dan teknologi full-stack.",
+  keywords: ["AI Engineer", "Full Stack Developer", "Data Scientist", "Portfolio", "Abimanyu Danendra"],
+  authors: [{ name: "Abimanyu Danendra Andarfebano" }],
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({
@@ -27,13 +36,15 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <body suppressHydrationWarning className="">
         <ThemeProvider>
-          <div className="bg-grain" />
-          <BackgroundArt />
-          <ScrollProgress />
-          <LenisProvider>
-            <Navbar />
-            {children}
-          </LenisProvider>
+          <LanguageProvider>
+            <div className="bg-grain" />
+            <BackgroundArt />
+            <ScrollProgress />
+            <LenisProvider>
+              <Navbar />
+              {children}
+            </LenisProvider>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
