@@ -110,10 +110,7 @@ export default function SocialLinks() {
 
             <div className="flex flex-col">
               <span className="text-lg font-bold tracking-tight leading-none transition-colors duration-300" style={{ color: "var(--text-primary)" }}>
-                {linkedIn.displayName}
-              </span>
-              <span className="text-sm transition-colors duration-300 mt-1" style={{ color: "var(--text-muted)" }}>
-                {linkedIn.subText}
+                Let's Connect
               </span>
             </div>
           </div>
@@ -160,10 +157,7 @@ export default function SocialLinks() {
 
                 <div className="flex flex-col min-w-0">
                   <span className="text-sm font-bold transition-colors duration-300" style={{ color: "var(--text-primary)" }}>
-                    {link.displayName}
-                  </span>
-                  <span className="text-[10px] leading-tight break-all transition-colors duration-300" style={{ color: "var(--text-muted)" }}>
-                    {link.subText}
+                    {link.name}
                   </span>
                 </div>
 
