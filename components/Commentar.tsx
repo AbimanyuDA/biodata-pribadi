@@ -51,18 +51,18 @@ const CommentItem = memo(({ comment, formatDate, isPinned = false }: CommentProp
         </div>
       )}
       <div className="flex-grow min-w-0">
-        <div className="flex items-center justify-between gap-4 mb-2">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4 mb-2">
+          <div className="flex items-center gap-2 min-w-0">
             <h4 className="font-medium truncate" style={{ color: isPinned ? "#a5b4fc" : "var(--text-primary)" }}>
               {comment.user_name}
             </h4>
             {isPinned && (
-              <span className="px-2 py-0.5 text-xs bg-indigo-500/20 text-indigo-300 rounded-full">
+              <span className="px-2 py-0.5 text-xs bg-indigo-500/20 text-indigo-300 rounded-full flex-shrink-0">
                 Admin
               </span>
             )}
           </div>
-          <span className="text-xs whitespace-nowrap" style={{ color: "var(--text-muted)" }}>
+          <span className="text-xs whitespace-nowrap self-start sm:self-center" style={{ color: "var(--text-muted)" }}>
             {formatDate(comment.created_at)}
           </span>
         </div>
