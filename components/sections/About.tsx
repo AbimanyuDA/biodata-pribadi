@@ -43,9 +43,9 @@ const ProfileImage = memo(() => (
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 z-10 transition-opacity duration-700 group-hover:opacity-0 hidden sm:block" />
           
           <img
-            src="/images/about/abimanyu.webp"
+            src="/images/about/abimanyu2.jpg"
             alt="Abimanyu Danendra"
-            className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
+            className="w-full h-full object-cover object-top transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
             loading="lazy"
             onError={(e) => {
               // Fallback if image fails to load
