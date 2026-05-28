@@ -54,7 +54,7 @@ export function ExperienceAchievements() {
                   data-aos-delay={idx * 80}
                 >
                   {/* Timeline dot */}
-                  <div className="absolute left-[14px] sm:left-[18px] top-5 w-4 h-4 rounded-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] border-2 border-[#030014] shadow-[0_0_12px_rgba(99,102,241,0.6)] z-10" />
+                  <div className="absolute left-[14px] sm:left-[18px] top-5 w-4 h-4 rounded-full bg-gradient-to-r from-[#6366f1] to-[#a855f7] border-2 shadow-[0_0_12px_rgba(99,102,241,0.6)] z-10" style={{ borderColor: "var(--bg-primary)" }} />
 
                   {/* Card */}
                   <div

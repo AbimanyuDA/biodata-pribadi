@@ -63,7 +63,7 @@ export default function Page() {
         <WelcomeScreen onLoadingComplete={() => setShowWelcome(false)} />
       )}
       
-      <main className="pt-16">
+      <main className="pt-16 overflow-x-hidden">
         <Hero />
         <About />
         <ExperienceAchievements />

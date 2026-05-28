@@ -43,7 +43,7 @@ const ProfileImage = memo(() => (
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 z-10 transition-opacity duration-700 group-hover:opacity-0 hidden sm:block" />
           
           <img
-            src="/images/about/abimanyu.jpeg"
+            src="/images/about/abimanyu.webp"
             alt="Abimanyu Danendra"
             className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1"
             loading="lazy"
@@ -135,7 +135,7 @@ export function About() {
   ];
 
   return (
-    <section id="about" className="section bg-[#030014] text-white">
+    <section id="about" className="section" style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)" }}>
       <Header lang={lang} />
 
       <div className="w-full mx-auto pt-4 md:pt-8 relative">

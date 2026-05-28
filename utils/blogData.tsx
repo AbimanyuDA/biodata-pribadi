@@ -31,7 +31,7 @@ export const blogPosts = [
         <div className="my-10 rounded-3xl overflow-hidden shadow-2xl border border-black/10 dark:border-white/10 group relative">
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
           <img
-            src="/images/blog/f7a02aa7-9e9e-41aa-88cb-ab46f6350172.JPG"
+            src="/images/blog/blog-cover.webp"
             alt="Perjalanan awal dan proses ekspor"
             className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700 relative z-0"
           />
@@ -45,7 +45,7 @@ export const blogPosts = [
         <div className="my-10 rounded-3xl overflow-hidden shadow-2xl border border-black/10 dark:border-white/10 group relative">
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
           <img
-            src="/images/blog/IMG_0520.jpg"
+            src="/images/blog/IMG_0520.webp"
             alt="Kendala yang terjadi di tengah jalan"
             className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700 relative z-0"
           />
@@ -60,7 +60,7 @@ export const blogPosts = [
         <div className="my-10 rounded-3xl overflow-hidden shadow-2xl border border-black/10 dark:border-white/10 group relative">
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
           <img
-            src="/images/blog/IMG_0281.jpeg"
+            src="/images/blog/IMG_0281.webp"
             alt="Bersyukur atas kasih Tuhan dan ketenangan"
             className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700 relative z-0"
           />

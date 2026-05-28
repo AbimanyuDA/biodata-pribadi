@@ -52,10 +52,10 @@ export function Navbar() {
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflowY = "hidden";
       if (lenis) lenis.stop();
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflowY = "";
       if (lenis) lenis.start();
     }
   }, [isOpen, lenis]);

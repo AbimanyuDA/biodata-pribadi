@@ -276,7 +276,7 @@ export function Hero() {
               <div className={`relative z-10 w-full transform transition-transform duration-500 ${isHovering ? "scale-105 rotate-1" : "scale-100"
                 }`}>
                 <img
-                  src="/Animation1.gif"
+                  src="/Animation1.webp"
                   alt="Developer Animation"
                   className="w-full h-auto object-contain"
                 />

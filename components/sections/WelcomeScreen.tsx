@@ -117,12 +117,12 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
           </div>
 
           {/* Centered content */}
-          <div className="relative min-h-screen flex flex-col items-center justify-center px-6 py-12">
-            <div className="w-full max-w-2xl mx-auto flex flex-col items-center gap-8 sm:gap-10 md:gap-12">
+          <div className="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-12 overflow-hidden">
+            <div className="w-full max-w-2xl mx-auto flex flex-col items-center gap-6 sm:gap-10 md:gap-12">
 
               {/* Icons Row */}
               <motion.div
-                className="flex justify-center gap-5 sm:gap-8 md:gap-12"
+                className="flex justify-center gap-4 sm:gap-8 md:gap-12"
                 initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
@@ -147,26 +147,26 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
                 transition={{ delay: 0.4, duration: 0.7 }}
               >
                 <h1 className="font-bold leading-tight">
-                  <div className="text-4xl sm:text-5xl md:text-7xl mb-2 sm:mb-3">
+                  <div className="text-3xl sm:text-5xl md:text-7xl mb-2 sm:mb-3">
                     {["Welcome", "To", "My"].map((word, i) => (
                       <motion.span
                         key={word}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.5 + i * 0.2, duration: 0.5 }}
-                        className={`inline-block px-2 ${isLight ? "" : "bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent"}`}
+                        className={`inline-block px-1 sm:px-2 ${isLight ? "" : "bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent"}`}
                         style={isLight ? { color: "var(--text-primary)" } : {}}
                       >
                         {word}
                       </motion.span>
-                    ))}{' '}
+                    ))}
                   </div>
-                  <div className="text-4xl sm:text-5xl md:text-7xl">
+                  <div className="text-3xl sm:text-5xl md:text-7xl">
                     <motion.span
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 1.1, duration: 0.5 }}
-                      className="inline-block px-2 bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent"
+                      className="inline-block px-1 sm:px-2 bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent"
                     >
                       Portfolio
                     </motion.span>{' '}
@@ -174,7 +174,7 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 1.3, duration: 0.5 }}
-                      className="inline-block px-2 bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent"
+                      className="inline-block px-1 sm:px-2 bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent"
                     >
                       Website
                     </motion.span>
@@ -192,7 +192,7 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
                 <div className="inline-flex items-center gap-2 px-5 py-2.5 sm:px-7 sm:py-3.5 rounded-full relative group">
                   <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-full blur-md group-hover:blur-lg transition-all duration-300" />
                   <div className="absolute inset-0 rounded-full border border-indigo-500/30" />
-                  <div className="relative flex items-center gap-2 text-xl sm:text-2xl md:text-3xl">
+                  <div className="relative flex items-center gap-2 text-base sm:text-2xl md:text-3xl">
                     <Globe className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-400 flex-shrink-0" />
                     <span className="bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent font-semibold tracking-wide">
                       <TypewriterEffect text="abimanyudans.com" startDelay={1600} />

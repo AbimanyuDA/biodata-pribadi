@@ -25,7 +25,7 @@ const projects: ProjectItem[] = [
     title: "Integrated Logistic Platform (CargoInd)",
     role: "Full Stack Development",
     url: "#",
-    img: "/images/portofolio/cargoind.png",
+    img: "/images/portofolio/cargoind.webp",
     desc: {
       id: "Platform sistem logistik terintegrasi (CargoInd) yang mencakup modul Customer, DMS, WMS, dan TMS.",
       en: "Integrated logistics platform (CargoInd) covering Customer, DMS, WMS, and TMS modules.",
@@ -47,7 +47,7 @@ const projects: ProjectItem[] = [
     title: "ERP System CV Abion Berkarya",
     role: "Full Stack Development",
     url: "#",
-    img: "/images/portofolio/erp-abion.png",
+    img: "/images/portofolio/erp-abion.webp",
     desc: {
       id: "Sistem ERP UMKM terintegrasi meliputi Logistic, Supply Chain, Keuangan, Karyawan, dan implementasi sistem Penggajian.",
       en: "Integrated SME ERP system covering Logistics, Supply Chain, Finance, HR, and Payroll implementation.",
@@ -69,7 +69,7 @@ const projects: ProjectItem[] = [
     title: "ERP Koperasi (Customizable)",
     role: "Full Stack Development",
     url: "#",
-    img: "/images/portofolio/erp-koperasi.png",
+    img: "/images/portofolio/erp-koperasi.webp",
     desc: {
       id: "Sistem ERP Koperasi yang dapat dikustomisasi sesuai kebutuhan organisasi, mencakup manajemen simpan pinjam, keuangan, anggota, dan pelaporan.",
       en: "Customizable Cooperative ERP system covering savings & loans management, finance, member management, and reporting.",
@@ -92,7 +92,7 @@ const projects: ProjectItem[] = [
     title: "Pelindo Car Rent (P-Car)",
     role: "Full Stack Development",
     url: "#",
-    img: "/images/portofolio/pcar.png",
+    img: "/images/portofolio/pcar.webp",
     desc: {
       id: "Aplikasi Pelindo Car Rent, sistem peminjaman kendaraan operasional Pelindo (P-Car).",
       en: "Pelindo Car Rent application — an operational vehicle borrowing system for Pelindo (P-Car).",
@@ -113,7 +113,7 @@ const projects: ProjectItem[] = [
     title: "AI-Based Credit Card Fraud Detection System",
     role: "AI Engineer & Full Stack Developer",
     url: "#",
-    img: "/images/portofolio/fraud.png",
+    img: "/images/portofolio/fraud.webp",
     desc: {
       id: "Sistem deteksi fraud kartu kredit berbasis rules engine dan machine learning untuk bank, mengidentifikasi transaksi mencurigakan secara real-time.",
       en: "AI-based credit card fraud detection system using rule engine and machine learning to identify suspicious transactions in real-time for banks.",
@@ -137,7 +137,7 @@ const projects: ProjectItem[] = [
     title: "TAkCEKin",
     role: "AI & Backend Development",
     url: "https://senopati.its.ac.id/TAkCEKin/",
-    img: "/images/portofolio/TAkCekIn.png",
+    img: "/images/portofolio/TAkCekIn.webp",
     desc: {
       id: "Website deteksi format Tugas Akhir secara otomatis berbasis AI untuk memvalidasi dokumen akademik.",
       en: "AI-based website that automatically detects and validates the format of academic thesis documents.",
@@ -148,7 +148,7 @@ const projects: ProjectItem[] = [
     title: "Aplikasi Kasir Warung Jeng Fe",
     role: "Full Stack Development",
     url: "#",
-    img: "/images/portofolio/kasir-warung.png",
+    img: "/images/portofolio/kasir-warung.webp",
     desc: {
       id: "Aplikasi kasir digital untuk UMKM Warung Jeng Fe — tersedia versi web & mobile (Flutter), dengan fitur transaksi penjualan, pencatatan pengeluaran, laporan akhir, dan rekap analitik bisnis.",
       en: "Digital cashier app for Warung Jeng Fe SME — available as web & mobile (Flutter), featuring sales transactions, expense tracking, end-of-day reports, and business analytics.",
@@ -171,7 +171,7 @@ const projects: ProjectItem[] = [
     title: "UMKM Inventory Optimization Analytics",
     role: "Consulting & Data-Driven Strategy",
     url: "#",
-    img: "/images/portofolio/analysis2.png",
+    img: "/images/portofolio/analysis2.webp",
     desc: {
       id: "Menganalisis data penjualan & perputaran stok untuk merancang strategi inventory forecasting dan reorder optimization.",
       en: "Analyzing sales data & stock turnover to design inventory forecasting and reorder optimization strategies.",
@@ -193,7 +193,7 @@ const projects: ProjectItem[] = [
     title: "Fundraising Strategy Analytics",
     role: "Consulting & Data-Driven Insights",
     url: "#",
-    img: "/images/portofolio/analysis1.png",
+    img: "/images/portofolio/analysis1.webp",
     desc: {
       id: "Menganalisis pola donasi dan segmentasi donor untuk merancang strategi fundraising yang lebih efektif bagi organisasi non-profit.",
       en: "Analyzing donation patterns and donor segmentation to design more effective fundraising strategies for non-profit organizations.",
@@ -214,7 +214,7 @@ const projects: ProjectItem[] = [
     title: "Conation",
     role: "Full Stack Development",
     url: "https://www.conation.co.id",
-    img: "/images/portofolio/conation.png",
+    img: "/images/portofolio/conation.webp",
     desc: {
       id: "Website startup kopi dengan sistem pemesanan terintegrasi penuh dan manajemen pesanan otomatis.",
       en: "Coffee startup website with a fully integrated ordering system and automated order management.",
@@ -225,7 +225,7 @@ const projects: ProjectItem[] = [
     title: "Vanilla Royal",
     role: "Web Design & Development (Full Stack)",
     url: "https://www.vanillaroyal.id/",
-    img: "/images/portofolio/vanillaroyal.png",
+    img: "/images/portofolio/vanillaroyal.webp",
     desc: {
       id: "Landing page website perusahaan ekspor vanilla dengan desain premium dan product showcase.",
       en: "Landing page website for a vanilla export company with a premium design and product showcase.",
@@ -236,7 +236,7 @@ const projects: ProjectItem[] = [
     title: "KPPM GKJW Karangpilang",
     role: "Full Stack Development",
     url: "https://kppmgkjwkarpil.vercel.app/",
-    img: "/images/portofolio/kppmkarpil.png",
+    img: "/images/portofolio/kppmkarpil.webp",
     desc: {
       id: "Website organisasi Gereja dengan landing page, sistem administrasi keuangan, dan pelaporan terintegrasi.",
       en: "Church organization website with a landing page, financial administration system, and integrated reporting.",
