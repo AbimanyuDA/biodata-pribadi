@@ -15,7 +15,7 @@ const poppins = Poppins({
 });
 
 export const metadata = {
-  title: "Abimanyu Danendra — Portfolio",
+  title: "Abimanyu Danendra | Portfolio",
   description: "AI Engineer, Full-Stack Developer & Data Scientist. Menciptakan solusi digital inovatif dengan AI, analisis data, dan teknologi full-stack.",
   keywords: ["AI Engineer", "Full Stack Developer", "Data Scientist", "Portfolio", "Abimanyu Danendra"],
   authors: [{ name: "Abimanyu Danendra Andarfebano" }],
