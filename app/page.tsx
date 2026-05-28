@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import "aos/dist/aos.css";
+import AOS from "aos";
 import WelcomeScreen from "../components/sections/WelcomeScreen";
 import { Hero } from "../components/sections/Hero";
 import { About } from "../components/sections/About";
@@ -33,27 +34,18 @@ export default function Page() {
 
   useEffect(() => {
     if (!showWelcome) {
-      const initAOS = async () => {
-        const AOS = (await import("aos")).default;
-        AOS.init({
-          once: false,
-          offset: 10,
-          duration: 1000,
-          mirror: false,
-        });
-      };
-      const timer = setTimeout(() => {
-        initAOS();
-      }, 150);
-      return () => clearTimeout(timer);
+      AOS.init({
+        once: false,
+        offset: 10,
+        duration: 1000,
+        mirror: false,
+      });
     }
   }, [showWelcome]);
 
   useEffect(() => {
     if (lenis && !showWelcome) {
-      import("aos").then((AOS) => {
-        AOS.default.refresh();
-      });
+      AOS.refresh();
     }
   }, [lenis, showWelcome]);
 

@@ -92,7 +92,7 @@ export function Contact() {
         <h2
           data-aos="fade-down"
           data-aos-duration="1000"
-          className="inline-block text-3xl md:text-5xl font-bold text-center mx-auto text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]"
+          className="inline-block text-3xl md:text-5xl font-bold text-center mx-auto pb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]"
         >
           {tx(t.contact.title, lang)}
         </h2>

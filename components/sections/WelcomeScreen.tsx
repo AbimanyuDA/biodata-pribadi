@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Code2, Github, Globe, User } from 'lucide-react';
 import { useTheme } from '../ThemeProvider';
 
-const TypewriterEffect = ({ text, startDelay = 0 }: { text: string; startDelay?: number }) => {
+const TypewriterEffect = ({ text, startDelay = 0, speed = 100 }: { text: string; startDelay?: number; speed?: number }) => {
   const [displayText, setDisplayText] = useState('');
 
   useEffect(() => {
@@ -19,14 +19,14 @@ const TypewriterEffect = ({ text, startDelay = 0 }: { text: string; startDelay?:
         } else {
           clearInterval(timer);
         }
-      }, 100);
+      }, speed);
     }, startDelay);
 
     return () => {
       clearTimeout(delayTimeout);
       clearInterval(timer);
     };
-  }, [text, startDelay]);
+  }, [text, startDelay, speed]);
 
   return (
     <span className="inline-block">
@@ -195,7 +195,7 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
                   <div className="relative flex items-center gap-2 text-base sm:text-2xl md:text-3xl">
                     <Globe className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-400 flex-shrink-0" />
                     <span className="bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent font-semibold tracking-wide">
-                      <TypewriterEffect text="abimanyudans.com" startDelay={1600} />
+                      <TypewriterEffect text="abimanyudans.com" startDelay={1600} speed={100} />
                     </span>
                   </div>
                 </div>

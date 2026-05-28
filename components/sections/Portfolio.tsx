@@ -110,30 +110,6 @@ const projects: ProjectItem[] = [
     tools: ["React", ".NET", "PostgreSQL"],
   },
   {
-    title: "AI-Based Credit Card Fraud Detection System",
-    role: "AI Engineer & Full Stack Developer",
-    url: "#",
-    img: "/images/portofolio/fraud.webp",
-    desc: {
-      id: "Sistem deteksi fraud kartu kredit berbasis rules engine dan machine learning untuk bank, mengidentifikasi transaksi mencurigakan secara real-time.",
-      en: "AI-based credit card fraud detection system using rule engine and machine learning to identify suspicious transactions in real-time for banks.",
-    },
-    fullDesc: {
-      id: "Sistem fraud detection yang menggabungkan rule-based logic dengan artificial intelligence untuk menganalisis transaksi kartu kredit dan mengidentifikasi aktivitas mencurigakan dengan akurasi tinggi. Menggunakan kombinasi rule engine untuk pattern matching dan model machine learning (Random Forest, XGBoost) untuk deteksi anomali, dengan real-time processing capability untuk reject atau approve transaksi dalam hitungan milliseconds.",
-      en: "A fraud detection system combining rule-based logic with AI to analyze credit card transactions and identify suspicious activity with high accuracy. Uses a rule engine for pattern matching and machine learning models (Random Forest, XGBoost) for anomaly detection, with real-time processing to reject or approve transactions within milliseconds.",
-    },
-    outputs: [
-      { id: "Rule engine dengan 50+ pattern rules untuk fraud detection", en: "Rule engine with 50+ pattern rules for fraud detection" },
-      { id: "Machine learning model dengan 95%+ akurasi", en: "Machine learning model with 95%+ accuracy" },
-      { id: "Real-time transaction processing pipeline", en: "Real-time transaction processing pipeline" },
-      { id: "Alert dashboard dengan fraud risk scoring", en: "Alert dashboard with fraud risk scoring" },
-      { id: "Historical analysis & trend reporting", en: "Historical analysis & trend reporting" },
-      { id: "Integration dengan banking system API", en: "Integration with banking system API" },
-      { id: "Model explainability untuk compliance & audit", en: "Model explainability for compliance & audit" },
-    ],
-    tools: ["Python", "TensorFlow", "XGBoost", "Node.js", "PostgreSQL", "Docker", "AWS"],
-  },
-  {
     title: "TAkCEKin",
     role: "AI & Backend Development",
     url: "https://senopati.its.ac.id/TAkCEKin/",
@@ -243,6 +219,30 @@ const projects: ProjectItem[] = [
     },
     tools: ["Next.js", "Tailwind CSS", "Supabase"],
   },
+  {
+    title: "AI-Based Credit Card Fraud Detection System",
+    role: "AI Engineer & Full Stack Developer",
+    url: "#",
+    img: "/images/portofolio/fraud.webp",
+    desc: {
+      id: "Sistem deteksi fraud kartu kredit berbasis rules engine dan machine learning untuk bank, mengidentifikasi transaksi mencurigakan secara real-time.",
+      en: "AI-based credit card fraud detection system using rule engine and machine learning to identify suspicious transactions in real-time for banks.",
+    },
+    fullDesc: {
+      id: "Sistem fraud detection yang menggabungkan rule-based logic dengan artificial intelligence untuk menganalisis transaksi kartu kredit dan mengidentifikasi aktivitas mencurigakan dengan akurasi tinggi. Menggunakan kombinasi rule engine untuk pattern matching dan model machine learning (Random Forest, XGBoost) untuk deteksi anomali, dengan real-time processing capability untuk reject atau approve transaksi dalam hitungan milliseconds.",
+      en: "A fraud detection system combining rule-based logic with AI to analyze credit card transactions and identify suspicious activity with high accuracy. Uses a rule engine for pattern matching and machine learning models (Random Forest, XGBoost) for anomaly detection, with real-time processing to reject or approve transactions within milliseconds.",
+    },
+    outputs: [
+      { id: "Rule engine dengan 50+ pattern rules untuk fraud detection", en: "Rule engine with 50+ pattern rules for fraud detection" },
+      { id: "Machine learning model dengan 95%+ akurasi", en: "Machine learning model with 95%+ accuracy" },
+      { id: "Real-time transaction processing pipeline", en: "Real-time transaction processing pipeline" },
+      { id: "Alert dashboard dengan fraud risk scoring", en: "Alert dashboard with fraud risk scoring" },
+      { id: "Historical analysis & trend reporting", en: "Historical analysis & trend reporting" },
+      { id: "Integration dengan banking system API", en: "Integration with banking system API" },
+      { id: "Model explainability untuk compliance & audit", en: "Model explainability for compliance & audit" },
+    ],
+    tools: ["Python", "TensorFlow", "XGBoost", "Node.js", "PostgreSQL", "Docker", "AWS"],
+  },
 ];
 
 interface CertificateItem {
@@ -340,7 +340,7 @@ export function Portfolio() {
     <section id="portfolio" className="section" style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)" }}>
       {/* Header section */}
       <div className="text-center pb-10" data-aos="fade-up" data-aos-duration="1000">
-        <h2 className="inline-block text-3xl md:text-5xl font-bold text-center mx-auto text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">
+        <h2 className="inline-block text-3xl md:text-5xl font-bold text-center mx-auto pb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">
           {tx(t.portfolio.showcaseTitle, lang)}
         </h2>
         <p className="max-w-2xl mx-auto text-sm md:text-base mt-2" style={{ color: "var(--text-secondary)" }}>

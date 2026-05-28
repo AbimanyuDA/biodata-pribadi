@@ -7,7 +7,7 @@ import { t, tx } from "../../utils/translations";
 const Header = memo(({ lang }: { lang: string }) => (
   <div className="text-center mb-8 px-4">
     <h2
-      className="text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]"
+      className="text-3xl md:text-5xl font-bold pb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]"
       data-aos="zoom-in-up"
       data-aos-duration="600"
     >

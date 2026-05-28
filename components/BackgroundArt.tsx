@@ -11,12 +11,10 @@ export function BackgroundArt() {
   ];
 
   useEffect(() => {
-    let currentScroll = 0;
-    let requestId: number;
+    let ticking = false;
 
-    const handleScroll = () => {
+    const updatePosition = () => {
       const newScroll = window.pageYOffset;
-      currentScroll = newScroll;
 
       blobRefs.current.forEach((blob, index) => {
         if (!blob) return;
@@ -34,16 +32,22 @@ export function BackgroundArt() {
         blob.style.transition = "transform 1.4s ease-out";
       });
 
-      requestId = requestAnimationFrame(handleScroll);
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updatePosition);
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     // Run once initially
-    handleScroll();
+    updatePosition();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      cancelAnimationFrame(requestId);
     };
   }, []);
 

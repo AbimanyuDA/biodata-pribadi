@@ -29,7 +29,7 @@ export function ExperienceAchievements() {
       <div className="w-full">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16" data-aos="fade-up" data-aos-duration="1000">
-          <h2 className="text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">
+          <h2 className="text-3xl md:text-5xl font-bold pb-2 text-transparent bg-clip-text bg-gradient-to-r from-[#6366f1] to-[#a855f7]">
             {tx(t.experience.title, lang)}
           </h2>
           <p className="text-gray-400 max-w-xl mx-auto text-sm sm:text-base mt-2">
