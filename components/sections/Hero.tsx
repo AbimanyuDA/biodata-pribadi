@@ -217,7 +217,7 @@ export function Hero() {
                 </div>
                 <div>
                   <div className="text-base sm:text-lg md:text-xl font-bold leading-none">
-                    <AnimatedCounter value={9} suffix="+" />
+                    <AnimatedCounter value={10} suffix="+" />
                   </div>
                   <p className="text-[9px] sm:text-xs uppercase tracking-wider mt-0.5" style={{ color: "var(--text-muted)" }}>{tx(t.hero.projects, lang)}</p>
                 </div>
