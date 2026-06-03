@@ -1,30 +1,13 @@
 "use client";
 import React, { useState, useEffect, useCallback, memo } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, ExternalLink, Sparkles, Award, Code2, Zap, Instagram } from "lucide-react";
 import { useLanguage } from "../LanguageProvider";
 import { useTheme } from "../ThemeProvider";
 import { t, tx } from "../../utils/translations";
 
-// Framer-motion variants — used instead of AOS for above-fold content
-const containerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 22 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-};
-
-const fadeLeft = {
-  hidden: { opacity: 0, x: 32 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
-
 const StatusBadge = memo(({ lang }: { lang: string }) => (
-  <div className="inline-block animate-float">
+  <div className="inline-block animate-float" data-aos="zoom-in" data-aos-delay="400">
     <div className="relative group">
       <div className="absolute -inset-0.5 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-full blur opacity-40 group-hover:opacity-60 transition duration-1000"></div>
       <div className="relative px-4 py-1.5 rounded-full backdrop-blur-xl border border-[#6366f1]/30" style={{ backgroundColor: "var(--bg-secondary)" }}>
@@ -39,7 +22,7 @@ const StatusBadge = memo(({ lang }: { lang: string }) => (
 StatusBadge.displayName = "StatusBadge";
 
 const MainTitle = memo(({ isLight }: { isLight: boolean }) => (
-  <div className="space-y-1">
+  <div className="space-y-1" data-aos="fade-up" data-aos-delay="600">
     <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-none">
       <span className="relative inline-block">
         <span className="absolute -inset-2 bg-gradient-to-r from-[#6366f1] to-[#a855f7] blur-2xl opacity-20"></span>
@@ -101,6 +84,7 @@ const SocialLink = memo(({ icon: Icon, link, label, isLight }: { icon: React.Com
 ));
 SocialLink.displayName = "SocialLink";
 
+// Animated Counter Component
 function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: string }) {
   const [count, setCount] = useState(0);
 
@@ -132,13 +116,14 @@ function AnimatedCounter({ value, suffix = "" }: { value: number; suffix?: strin
 const TYPING_SPEED = 100;
 const ERASING_SPEED = 50;
 const PAUSE_DURATION = 1800;
+const WORDS = ["AI Engineer", "Fullstack Developer", "Data Scientist", "Finance & Investment"];
 const SOCIAL_LINKS = [
   { icon: Github, link: "https://github.com/abimanyuda", label: "GitHub Profile" },
   { icon: Linkedin, link: "https://www.linkedin.com/in/abimanyudans/", label: "LinkedIn Profile" },
   { icon: Instagram, link: "https://www.instagram.com/abimanyudans", label: "Instagram Profile" }
 ];
 
-export function Hero({ animateIn = false }: { animateIn?: boolean }) {
+export function Hero() {
   const { lang } = useLanguage();
   const { theme } = useTheme();
   const isLight = theme === "light";
@@ -167,7 +152,7 @@ export function Hero({ animateIn = false }: { animateIn?: boolean }) {
         setIsTyping(true);
       }
     }
-  }, [charIndex, isTyping, wordIndex, WORDS]);
+  }, [charIndex, isTyping, wordIndex]);
 
   useEffect(() => {
     const timeout = setTimeout(
@@ -183,48 +168,49 @@ export function Hero({ animateIn = false }: { animateIn?: boolean }) {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-primary)" }}
     >
+      {/* Background radial effects */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-gradient-to-br from-indigo-500/10 to-purple-500/10 blur-3xl rounded-full pointer-events-none animate-pulse-slow"></div>
 
       <div className="w-full max-w-6xl mx-auto px-5 sm:px-8 lg:px-10 py-20 md:py-24 relative z-10">
-        <motion.div
-          className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16"
-          variants={containerVariants}
-          initial="hidden"
-          animate={animateIn ? "visible" : "hidden"}
-        >
+        {/* Mobile: Column, Desktop: 2-column row */}
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16">
 
-          {/* Left Column */}
-          <div className="w-full lg:w-[52%] space-y-5 sm:space-y-6 text-center lg:text-left order-2 lg:order-1">
-            <motion.div variants={fadeUp} className="flex justify-center lg:justify-start">
+          {/* Left Column (Content) */}
+          <div className="w-full lg:w-[52%] space-y-5 sm:space-y-6 text-center lg:text-left order-2 lg:order-1" data-aos="fade-right" data-aos-duration="1000">
+            <div className="flex justify-center lg:justify-start">
               <StatusBadge lang={lang} />
-            </motion.div>
-
-            <motion.div variants={fadeUp} className="flex justify-center lg:justify-start">
+            </div>
+            <div className="flex justify-center lg:justify-start">
               <MainTitle isLight={isLight} />
-            </motion.div>
+            </div>
 
             {/* Typed Tagline */}
-            <motion.div variants={fadeUp} className="h-8 flex items-center justify-center lg:justify-start">
-              <span className="text-lg sm:text-xl md:text-2xl font-light tracking-wide" style={{ color: "var(--text-secondary)" }}>
+            <div className="h-8 flex items-center justify-center lg:justify-start" data-aos="fade-up" data-aos-delay="800">
+              <span
+                className="text-lg sm:text-xl md:text-2xl font-light tracking-wide"
+                style={{ color: "var(--text-secondary)" }}
+              >
                 {text}
               </span>
               <span className="w-[3px] h-6 bg-gradient-to-t from-[#6366f1] to-[#a855f7] ml-1 animate-blink flex-shrink-0"></span>
-            </motion.div>
+            </div>
 
-            {/* Bio */}
-            <motion.p
-              variants={fadeUp}
+            {/* Bio/Name text */}
+            <p
               className="text-sm sm:text-base md:text-lg max-w-xl leading-relaxed font-light mx-auto lg:mx-0"
               style={{ color: "var(--text-secondary)" }}
+              data-aos="fade-up"
+              data-aos-delay="1000"
             >
               {tx(t.hero.bio, lang)} <strong style={{ color: "var(--text-primary)" }} className="font-semibold">Abimanyu Danendra Andarfebano</strong>. {tx(t.hero.bioText, lang)}
-            </motion.p>
+            </p>
 
-            {/* Metrics */}
-            <motion.div
-              variants={fadeUp}
+            {/* Metrics Row */}
+            <div
               className="grid grid-cols-3 gap-3 sm:gap-4 py-4 sm:py-5 border-y max-w-lg mx-auto lg:mx-0"
               style={{ borderColor: "var(--border)" }}
+              data-aos="fade-up"
+              data-aos-delay="1200"
             >
               <div className="flex flex-col items-center lg:flex-row lg:items-center gap-2 text-center lg:text-left">
                 <div className="p-2 rounded-lg bg-cyan-500/15 flex-shrink-0">
@@ -259,32 +245,37 @@ export function Hero({ animateIn = false }: { animateIn?: boolean }) {
                   <p className="text-[9px] sm:text-xs uppercase tracking-wider mt-0.5" style={{ color: "var(--text-muted)" }}>{tx(t.hero.awards, lang)}</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* CTA Buttons */}
-            <motion.div variants={fadeUp} className="flex flex-row gap-3 w-full justify-center lg:justify-start max-w-lg mx-auto lg:mx-0">
+            <div className="flex flex-row gap-3 w-full justify-center lg:justify-start max-w-lg mx-auto lg:mx-0" data-aos="fade-up" data-aos-delay="1400">
               <CTAButton href="#portfolio" text={tx(t.hero.ctaProjects, lang)} icon={ExternalLink} isLight={isLight} />
               <CTAButton href="#contact" text={tx(t.hero.ctaContact, lang)} icon={Mail} isLight={isLight} />
-            </motion.div>
+            </div>
 
             {/* Social Links */}
-            <motion.div variants={fadeUp} className="flex gap-3 justify-center lg:justify-start pt-1">
+            <div className="flex gap-3 justify-center lg:justify-start pt-1" data-aos="fade-up" data-aos-delay="1600">
               {SOCIAL_LINKS.map((social, index) => (
                 <SocialLink key={index} {...social} isLight={isLight} />
               ))}
-            </motion.div>
+            </div>
           </div>
 
-          {/* Right Column (Animation) */}
-          <motion.div
-            variants={fadeLeft}
+          {/* Right Column (Visual Animation GIF) */}
+          <div
             className="w-full lg:w-[48%] flex items-center justify-center relative order-1 lg:order-2"
+            data-aos="fade-left"
+            data-aos-delay="600"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
             <div className="relative w-[260px] sm:w-[360px] md:w-[420px] lg:w-full lg:max-w-[480px] opacity-95">
-              <div className={`absolute inset-0 bg-gradient-to-r from-[#6366f1]/10 to-[#a855f7]/10 rounded-3xl blur-3xl transition-all duration-700 ease-in-out ${isHovering ? "opacity-60 scale-105" : "opacity-30 scale-100"}`} />
-              <div className={`relative z-10 w-full transform transition-transform duration-500 ${isHovering ? "scale-105 rotate-1" : "scale-100"}`}>
+              {/* Glowing behind element */}
+              <div className={`absolute inset-0 bg-gradient-to-r from-[#6366f1]/10 to-[#a855f7]/10 rounded-3xl blur-3xl transition-all duration-700 ease-in-out ${isHovering ? "opacity-60 scale-105" : "opacity-30 scale-100"
+                }`} />
+
+              <div className={`relative z-10 w-full transform transition-transform duration-500 ${isHovering ? "scale-105 rotate-1" : "scale-100"
+                }`}>
                 <Image
                   src="/Animation1.webp"
                   alt="Developer Animation"
@@ -296,9 +287,9 @@ export function Hero({ animateIn = false }: { animateIn?: boolean }) {
                 />
               </div>
             </div>
-          </motion.div>
+          </div>
 
-        </motion.div>
+        </div>
       </div>
     </section>
   );
