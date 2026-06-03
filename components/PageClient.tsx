@@ -55,7 +55,7 @@ export function PageClient() {
       {/* Always mounted — WelcomeScreen's z-index:9999 covers this during loading.
           When WelcomeScreen fades, main is already rendered underneath. */}
       <main className="pt-16 overflow-x-hidden">
-        <Hero />
+        <Hero animateIn={!showWelcome} />
         <About />
         <ExperienceAchievements />
         <Portfolio />
