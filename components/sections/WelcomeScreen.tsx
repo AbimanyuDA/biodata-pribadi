@@ -89,10 +89,9 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
   const containerVariants = {
     exit: {
       opacity: 0,
-      scale: 1.08,
-      filter: "blur(10px)",
+      scale: 1.04,
       transition: {
-        duration: 0.7,
+        duration: 0.5,
         ease: "easeInOut",
       }
     }

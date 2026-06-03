@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useCallback, memo } from "react";
+import Image from "next/image";
 import { Github, Linkedin, Mail, ExternalLink, Sparkles, Award, Code2, Zap, Instagram } from "lucide-react";
 import { useLanguage } from "../LanguageProvider";
 import { useTheme } from "../ThemeProvider";
@@ -275,9 +276,13 @@ export function Hero() {
 
               <div className={`relative z-10 w-full transform transition-transform duration-500 ${isHovering ? "scale-105 rotate-1" : "scale-100"
                 }`}>
-                <img
+                <Image
                   src="/Animation1.webp"
                   alt="Developer Animation"
+                  width={480}
+                  height={480}
+                  priority
+                  unoptimized
                   className="w-full h-auto object-contain"
                 />
               </div>

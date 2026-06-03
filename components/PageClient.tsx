@@ -52,14 +52,16 @@ export function PageClient() {
       {showWelcome && (
         <WelcomeScreen onLoadingComplete={() => setShowWelcome(false)} />
       )}
-      <main className="pt-16 overflow-x-hidden">
-        <Hero />
-        <About />
-        <ExperienceAchievements />
-        <Portfolio />
-        <Blog />
-        <Contact />
-      </main>
+      {!showWelcome && (
+        <main className="pt-16 overflow-x-hidden">
+          <Hero />
+          <About />
+          <ExperienceAchievements />
+          <Portfolio />
+          <Blog />
+          <Contact />
+        </main>
+      )}
     </>
   );
 }
