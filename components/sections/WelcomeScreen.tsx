@@ -75,9 +75,9 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
 
     const timer = setTimeout(() => {
       setIsLoading(false);
-      setTimeout(() => {
-        onLoadingComplete?.();
-      }, 900);
+      // Fire immediately when exit animation starts so main content
+      // is revealed as WelcomeScreen fades — no blank gap
+      onLoadingComplete?.();
     }, 3400);
     
     return () => {

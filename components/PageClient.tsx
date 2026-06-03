@@ -32,6 +32,8 @@ export function PageClient() {
 
   useEffect(() => {
     if (!showWelcome) {
+      // AOS inits while WelcomeScreen is still mid-fade (500ms window),
+      // hiding elements and starting animations as the screen reveals.
       AOS.init({
         once: false,
         offset: 10,
@@ -52,14 +54,9 @@ export function PageClient() {
       {showWelcome && (
         <WelcomeScreen onLoadingComplete={() => setShowWelcome(false)} />
       )}
-      {/* Pre-mount during welcome so assets load in background; hidden until transition done */}
-      <main
-        className="pt-16 overflow-x-hidden"
-        style={{
-          visibility: showWelcome ? "hidden" : "visible",
-          pointerEvents: showWelcome ? "none" : "auto",
-        }}
-      >
+      {/* Always mounted — WelcomeScreen's z-index:9999 covers this during loading.
+          When WelcomeScreen fades out, main is already rendered underneath. */}
+      <main className="pt-16 overflow-x-hidden">
         <Hero />
         <About />
         <ExperienceAchievements />
