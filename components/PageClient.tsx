@@ -52,16 +52,21 @@ export function PageClient() {
       {showWelcome && (
         <WelcomeScreen onLoadingComplete={() => setShowWelcome(false)} />
       )}
-      {!showWelcome && (
-        <main className="pt-16 overflow-x-hidden">
-          <Hero />
-          <About />
-          <ExperienceAchievements />
-          <Portfolio />
-          <Blog />
-          <Contact />
-        </main>
-      )}
+      {/* Pre-mount during welcome so assets load in background; hidden until transition done */}
+      <main
+        className="pt-16 overflow-x-hidden"
+        style={{
+          visibility: showWelcome ? "hidden" : "visible",
+          pointerEvents: showWelcome ? "none" : "auto",
+        }}
+      >
+        <Hero />
+        <About />
+        <ExperienceAchievements />
+        <Portfolio />
+        <Blog />
+        <Contact />
+      </main>
     </>
   );
 }

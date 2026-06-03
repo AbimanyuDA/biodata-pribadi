@@ -155,6 +155,7 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${inter.variable} ${poppins.variable}`}>
       <head suppressHydrationWarning>
+        <link rel="preload" href="/Animation1.webp" as="image" type="image/webp" />
         <script
           type="application/ld+json"
           suppressHydrationWarning
