@@ -15,6 +15,31 @@ const ORBIT_ICONS = [
 
 const LOADING_STEPS = ['Assets', 'Styles', 'Scripts', 'Ready'];
 
+function Typewriter({ text, startDelay = 0, speed = 90 }: { text: string; startDelay?: number; speed?: number }) {
+  const [displayed, setDisplayed] = useState('');
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    let i = 0;
+    const t = setTimeout(() => {
+      const iv = setInterval(() => {
+        i++;
+        setDisplayed(text.slice(0, i));
+        if (i >= text.length) { clearInterval(iv); setDone(true); }
+      }, speed);
+      return () => clearInterval(iv);
+    }, startDelay);
+    return () => clearTimeout(t);
+  }, [text, startDelay, speed]);
+
+  return (
+    <span>
+      {displayed}
+      {!done && <span className="inline-block w-px h-3.5 bg-indigo-400 align-middle ml-px animate-pulse" />}
+    </span>
+  );
+}
+
 interface WelcomeScreenProps {
   onLoadingComplete: () => void;
 }
@@ -28,7 +53,7 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseGlowRef = useRef<HTMLDivElement>(null);
 
-  // Particles generated client-side only to avoid SSR/hydration mismatch
+  // Particles — 10 max, client-only to avoid SSR hydration mismatch
   const [particles, setParticles] = useState<{
     id: number; x: number; y: number; size: number;
     dur: number; delay: number; opacity: number;
@@ -36,14 +61,14 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
   }[]>([]);
 
   useEffect(() => {
-    setParticles(Array.from({ length: 20 }, (_, i) => ({
+    setParticles(Array.from({ length: 10 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
       size: Math.random() * 2.5 + 1,
-      dur: 12 + Math.random() * 10,
+      dur: 14 + Math.random() * 8,
       delay: Math.random() * 6,
-      opacity: 0.12 + Math.random() * 0.25,
+      opacity: 0.12 + Math.random() * 0.22,
       driftX: (Math.random() - 0.5) * 50,
       driftY: -(20 + Math.random() * 35),
       color: ['#6366f1', '#a855f7', '#06b6d4'][i % 3],
@@ -60,11 +85,11 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
     el.style.background = `radial-gradient(480px at ${x}% ${y}%, rgba(99,102,241,0.11) 0%, transparent 65%)`;
   }, []);
 
-  // Cycle through orbit icons in the center
+  // Cycle through orbit icons — slower interval is easier on iOS GPU
   useEffect(() => {
     const cycle = setInterval(() => {
       setActiveIcon(prev => (prev + 1) % ORBIT_ICONS.length);
-    }, 600);
+    }, 900);
     return () => clearInterval(cycle);
   }, []);
 
@@ -78,7 +103,9 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
 
     const timer = setTimeout(() => {
       setIsLoading(false);
-      onLoadingComplete?.();
+      // Delay matches exit animation duration so AnimatePresence can finish
+      // before WelcomeScreen is unmounted by the parent
+      setTimeout(() => onLoadingComplete?.(), 550);
     }, 3400);
 
     return () => { clearTimeout(timer); clearInterval(interval); };
@@ -94,9 +121,15 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
           ref={containerRef}
           className="fixed inset-0 z-[9999] overflow-hidden"
           style={{ backgroundColor: 'var(--bg-primary)' }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.04, transition: { duration: 0.5, ease: 'easeInOut' } }}
+          initial={{ opacity: 0, scale: 1.04 }}
+          animate={{ opacity: 1, scale: 1, transition: { duration: 0.4, ease: 'easeOut' } }}
+          exit={{
+            opacity: 0,
+            y: -40,
+            scale: 0.97,
+            filter: 'blur(6px)',
+            transition: { duration: 0.55, ease: [0.4, 0, 1, 1] },
+          }}
           onMouseMove={handleMouseMove}
         >
           {/* Mouse spotlight layer */}
@@ -235,11 +268,10 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
                       transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
                     >
                       <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center border backdrop-blur-sm"
+                        className="w-7 h-7 rounded-lg flex items-center justify-center border"
                         style={{
-                          backgroundColor: `${color}18`,
+                          backgroundColor: `${color}20`,
                           borderColor: `${color}45`,
-                          boxShadow: `0 0 8px ${color}28`,
                         }}
                       >
                         <Icon className="w-3.5 h-3.5" style={{ color }} />
@@ -249,23 +281,7 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
                 })}
               </motion.div>
 
-              {/* Pulsing glow dot on orbit track */}
-              <motion.div
-                className="absolute rounded-full"
-                style={{
-                  width: 6, height: 6,
-                  background: 'linear-gradient(135deg, #6366f1, #a855f7)',
-                  top: '50%',
-                  left: '50%',
-                  boxShadow: '0 0 8px rgba(99,102,241,0.8)',
-                }}
-                animate={{
-                  rotate: [0, 360],
-                  x: [0, orbitR, 0, -orbitR, 0],
-                  y: [-orbitR, 0, orbitR, 0, -orbitR],
-                }}
-                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-              />
+{/* Pulsing dot removed — complex path animation was heavy on iOS */}
 
               {/* Center — cycling icon */}
               <motion.div
@@ -274,23 +290,24 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.2, type: 'spring', bounce: 0.45, duration: 0.8 }}
               >
-                {/* Pulsing glow — colour follows active icon */}
-                <motion.div
+                {/* Static glow — no animated filter/color to keep iOS GPU happy */}
+                <div
                   className="absolute inset-0 rounded-full"
-                  style={{ filter: 'blur(14px)' }}
-                  animate={{
+                  style={{
                     background: ORBIT_ICONS[activeIcon].color,
-                    opacity: [0.35, 0.6, 0.35],
-                    scale: [1, 1.18, 1],
+                    filter: 'blur(14px)',
+                    opacity: isLight ? 0.2 : 0.4,
+                    transition: 'background 0.5s ease',
                   }}
-                  transition={{ duration: 0.5, ease: 'easeInOut' }}
                 />
                 <div
                   className="relative w-16 h-16 sm:w-[80px] sm:h-[80px] rounded-full flex items-center justify-center overflow-hidden select-none"
                   style={{
-                    background: 'linear-gradient(145deg, #0f0c29 0%, #1e1b4b 60%, #0f0c29 100%)',
+                    background: isLight
+                      ? `linear-gradient(145deg, #ede9fe 0%, #f5f3ff 60%, #ede9fe 100%)`
+                      : `linear-gradient(145deg, #0f0c29 0%, #1e1b4b 60%, #0f0c29 100%)`,
                     border: `2px solid ${ORBIT_ICONS[activeIcon].color}70`,
-                    boxShadow: `0 0 28px ${ORBIT_ICONS[activeIcon].color}35, inset 0 1px 0 rgba(255,255,255,0.08)`,
+                    boxShadow: `0 0 28px ${ORBIT_ICONS[activeIcon].color}30, inset 0 1px 0 ${isLight ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.08)'}`,
                     transition: 'border-color 0.4s, box-shadow 0.4s',
                   }}
                 >
@@ -382,7 +399,7 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
               >
                 <Globe className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
                 <span className="text-xs sm:text-sm font-mono bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
-                  abimanyudans.com
+                  <Typewriter text="abimanyudans.com" startDelay={1800} speed={90} />
                 </span>
               </motion.div>
             </div>

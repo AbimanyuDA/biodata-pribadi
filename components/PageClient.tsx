@@ -59,9 +59,13 @@ export function PageClient() {
           When WelcomeScreen fades out, main animates in simultaneously. */}
       <motion.main
         className="pt-16 overflow-x-hidden"
-        initial={{ opacity: 0, y: 24 }}
-        animate={showWelcome ? { opacity: 0, y: 24 } : { opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ opacity: 0, y: 40, filter: 'blur(4px)' }}
+        animate={
+          showWelcome
+            ? { opacity: 0, y: 40, filter: 'blur(4px)' }
+            : { opacity: 1, y: 0, filter: 'blur(0px)' }
+        }
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
       >
         <Hero />
         <About />
