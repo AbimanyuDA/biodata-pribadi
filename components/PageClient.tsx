@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import "aos/dist/aos.css";
 import AOS from "aos";
 import WelcomeScreen from "./sections/WelcomeScreen";
@@ -55,15 +56,20 @@ export function PageClient() {
         <WelcomeScreen onLoadingComplete={() => setShowWelcome(false)} />
       )}
       {/* Always mounted — WelcomeScreen's z-index:9999 covers this during loading.
-          When WelcomeScreen fades out, main is already rendered underneath. */}
-      <main className="pt-16 overflow-x-hidden">
+          When WelcomeScreen fades out, main animates in simultaneously. */}
+      <motion.main
+        className="pt-16 overflow-x-hidden"
+        initial={{ opacity: 0, y: 24 }}
+        animate={showWelcome ? { opacity: 0, y: 24 } : { opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      >
         <Hero />
         <About />
         <ExperienceAchievements />
         <Portfolio />
         <Blog />
         <Contact />
-      </main>
+      </motion.main>
     </>
   );
 }

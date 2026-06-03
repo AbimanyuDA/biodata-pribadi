@@ -1,55 +1,19 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Code2, Github, Globe, User } from 'lucide-react';
+import { Code2, Globe, Brain, Database, Cpu, Layers, GitBranch } from 'lucide-react';
 import { useTheme } from '../ThemeProvider';
 
-const TypewriterEffect = ({ text, startDelay = 0, speed = 100 }: { text: string; startDelay?: number; speed?: number }) => {
-  const [displayText, setDisplayText] = useState('');
+const ORBIT_ICONS = [
+  { Icon: Code2,     color: '#6366f1' },
+  { Icon: Brain,     color: '#a855f7' },
+  { Icon: Database,  color: '#06b6d4' },
+  { Icon: Cpu,       color: '#f59e0b' },
+  { Icon: Layers,    color: '#10b981' },
+  { Icon: GitBranch, color: '#ec4899' },
+];
 
-  useEffect(() => {
-    let index = 0;
-    let timer: ReturnType<typeof setInterval>;
-
-    const delayTimeout = setTimeout(() => {
-      timer = setInterval(() => {
-        if (index <= text.length) {
-          setDisplayText(text.slice(0, index));
-          index++;
-        } else {
-          clearInterval(timer);
-        }
-      }, speed);
-    }, startDelay);
-
-    return () => {
-      clearTimeout(delayTimeout);
-      clearInterval(timer);
-    };
-  }, [text, startDelay, speed]);
-
-  return (
-    <span className="inline-block">
-      {displayText}
-      <span className="animate-pulse text-indigo-400">|</span>
-    </span>
-  );
-};
-
-const IconButton = ({ Icon, isLight }: { Icon: React.ComponentType<any>; isLight: boolean }) => (
-  <div className="relative group hover:scale-110 transition-transform duration-300">
-    <div className="absolute -inset-2 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full blur opacity-30 group-hover:opacity-75 transition duration-300" />
-    <div
-      className="relative p-3 sm:p-4 backdrop-blur-sm rounded-full border"
-      style={{
-        backgroundColor: isLight ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)",
-        borderColor: isLight ? "rgba(99,102,241,0.25)" : "rgba(255,255,255,0.1)",
-      }}
-    >
-      <Icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9" style={{ color: isLight ? "#4f46e5" : "white" }} />
-    </div>
-  </div>
-);
+const LOADING_STEPS = ['Assets', 'Styles', 'Scripts', 'Ready'];
 
 interface WelcomeScreenProps {
   onLoadingComplete: () => void;
@@ -57,170 +21,437 @@ interface WelcomeScreenProps {
 
 export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps) {
   const { theme } = useTheme();
-  const isLight = theme === "light";
+  const isLight = theme === 'light';
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [activeIcon, setActiveIcon] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mouseGlowRef = useRef<HTMLDivElement>(null);
+
+  // Particles generated client-side only to avoid SSR/hydration mismatch
+  const [particles, setParticles] = useState<{
+    id: number; x: number; y: number; size: number;
+    dur: number; delay: number; opacity: number;
+    driftX: number; driftY: number; color: string;
+  }[]>([]);
 
   useEffect(() => {
-    // Animate progress bar
+    setParticles(Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 2.5 + 1,
+      dur: 12 + Math.random() * 10,
+      delay: Math.random() * 6,
+      opacity: 0.12 + Math.random() * 0.25,
+      driftX: (Math.random() - 0.5) * 50,
+      driftY: -(20 + Math.random() * 35),
+      color: ['#6366f1', '#a855f7', '#06b6d4'][i % 3],
+    })));
+  }, []);
+
+  // Mouse-following spotlight (desktop only)
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const el = mouseGlowRef.current;
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!el || !rect) return;
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    el.style.background = `radial-gradient(480px at ${x}% ${y}%, rgba(99,102,241,0.11) 0%, transparent 65%)`;
+  }, []);
+
+  // Cycle through orbit icons in the center
+  useEffect(() => {
+    const cycle = setInterval(() => {
+      setActiveIcon(prev => (prev + 1) % ORBIT_ICONS.length);
+    }, 600);
+    return () => clearInterval(cycle);
+  }, []);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prev + (100 / 34); // reach 100 in ~3.4s
+        if (prev >= 100) { clearInterval(interval); return 100; }
+        return prev + 100 / 34;
       });
     }, 100);
 
     const timer = setTimeout(() => {
       setIsLoading(false);
-      // Fire immediately when exit animation starts so main content
-      // is revealed as WelcomeScreen fades — no blank gap
       onLoadingComplete?.();
     }, 3400);
-    
-    return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
-    };
+
+    return () => { clearTimeout(timer); clearInterval(interval); };
   }, [onLoadingComplete]);
 
-  const containerVariants = {
-    exit: {
-      opacity: 0,
-      scale: 1.04,
-      transition: {
-        duration: 0.5,
-        ease: "easeInOut",
-      }
-    }
-  };
+  const orbitR = 90;
+  const orbitDiameter = orbitR * 2;
 
   return (
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          className="fixed inset-0 z-[9999]"
-          style={{ backgroundColor: "var(--bg-primary)" }}
+          ref={containerRef}
+          className="fixed inset-0 z-[9999] overflow-hidden"
+          style={{ backgroundColor: 'var(--bg-primary)' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit="exit"
-          variants={containerVariants}
+          exit={{ opacity: 0, scale: 1.04, transition: { duration: 0.5, ease: 'easeInOut' } }}
+          onMouseMove={handleMouseMove}
         >
-          {/* Background gradient blobs */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/10 to-purple-600/10 blur-3xl animate-pulse" />
-            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-indigo-600/8 rounded-full blur-3xl" />
-            <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-600/8 rounded-full blur-3xl" />
+          {/* Mouse spotlight layer */}
+          <div
+            ref={mouseGlowRef}
+            className="absolute inset-0 pointer-events-none transition-all duration-150"
+          />
+
+          {/* Subtle grid */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(99,102,241,${isLight ? '0.07' : '0.04'}) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(99,102,241,${isLight ? '0.07' : '0.04'}) 1px, transparent 1px)
+              `,
+              backgroundSize: '44px 44px',
+            }}
+          />
+
+          {/* Floating particles */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {particles.map(p => (
+              <motion.span
+                key={p.id}
+                className="absolute rounded-full"
+                style={{
+                  left: `${p.x}%`,
+                  top: `${p.y}%`,
+                  width: p.size,
+                  height: p.size,
+                  backgroundColor: p.color,
+                  opacity: p.opacity,
+                }}
+                animate={{
+                  x: [0, p.driftX, 0],
+                  y: [0, p.driftY, 0],
+                  opacity: [p.opacity, p.opacity * 2.2, p.opacity],
+                }}
+                transition={{
+                  duration: p.dur,
+                  delay: p.delay,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                }}
+              />
+            ))}
           </div>
 
-          {/* Centered content */}
-          <div className="relative min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-12 overflow-hidden">
-            <div className="w-full max-w-2xl mx-auto flex flex-col items-center gap-6 sm:gap-10 md:gap-12">
+          {/* Corner bracket decorations */}
+          {(['top-5 left-5', 'top-5 right-5', 'bottom-5 left-5', 'bottom-5 right-5'] as const).map((pos, ci) => (
+            <motion.div
+              key={ci}
+              className={`absolute ${pos} w-7 h-7 sm:w-9 sm:h-9`}
+              initial={{ opacity: 0, scale: 0.4 }}
+              animate={{ opacity: 0.35, scale: 1 }}
+              transition={{ delay: 0.05 + ci * 0.06, duration: 0.4 }}
+            >
+              <div
+                className="absolute w-full h-px bg-gradient-to-r from-indigo-500 to-transparent"
+                style={{
+                  top: ci < 2 ? 0 : 'auto',
+                  bottom: ci >= 2 ? 0 : 'auto',
+                  transform: ci % 2 === 1 ? 'scaleX(-1)' : undefined,
+                }}
+              />
+              <div
+                className="absolute h-full w-px bg-gradient-to-b from-indigo-500 to-transparent"
+                style={{
+                  left: ci % 2 === 0 ? 0 : 'auto',
+                  right: ci % 2 === 1 ? 0 : 'auto',
+                  transform: ci >= 2 ? 'scaleY(-1)' : undefined,
+                }}
+              />
+            </motion.div>
+          ))}
 
-              {/* Icons Row */}
+          {/* ── Main content ── */}
+          <div className="relative h-full flex flex-col items-center justify-center gap-5 sm:gap-7 px-4">
+
+            {/* Orbit + Avatar */}
+            <div
+              className="relative flex items-center justify-center"
+              style={{ width: orbitDiameter + 40, height: orbitDiameter + 40 }}
+            >
+              {/* Dashed orbit track */}
+              <div
+                className="absolute rounded-full border border-dashed"
+                style={{
+                  width: orbitDiameter,
+                  height: orbitDiameter,
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  borderColor: 'rgba(99,102,241,0.22)',
+                }}
+              />
+
+              {/* Second faint ring */}
+              <div
+                className="absolute rounded-full border"
+                style={{
+                  width: orbitDiameter + 24,
+                  height: orbitDiameter + 24,
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  borderColor: 'rgba(168,85,247,0.08)',
+                }}
+              />
+
+              {/* Rotating icon container */}
               <motion.div
-                className="flex justify-center gap-4 sm:gap-8 md:gap-12"
-                initial={{ opacity: 0, y: -30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
+                className="absolute"
+                style={{
+                  width: orbitDiameter,
+                  height: orbitDiameter,
+                  top: '50%',
+                  left: '50%',
+                  marginTop: -orbitR,
+                  marginLeft: -orbitR,
+                }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
               >
-                {[Code2, User, Github].map((Icon, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.2, duration: 0.5 }}
+                {ORBIT_ICONS.map(({ Icon, color }, i) => {
+                  const angle = (i / ORBIT_ICONS.length) * Math.PI * 2 - Math.PI / 2;
+                  const cx = orbitR + Math.cos(angle) * orbitR - 14;
+                  const cy = orbitR + Math.sin(angle) * orbitR - 14;
+                  return (
+                    <motion.div
+                      key={i}
+                      className="absolute"
+                      style={{ left: cx, top: cy, width: 28, height: 28 }}
+                      animate={{ rotate: -360 }}
+                      transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                    >
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center border backdrop-blur-sm"
+                        style={{
+                          backgroundColor: `${color}18`,
+                          borderColor: `${color}45`,
+                          boxShadow: `0 0 8px ${color}28`,
+                        }}
+                      >
+                        <Icon className="w-3.5 h-3.5" style={{ color }} />
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+
+              {/* Pulsing glow dot on orbit track */}
+              <motion.div
+                className="absolute rounded-full"
+                style={{
+                  width: 6, height: 6,
+                  background: 'linear-gradient(135deg, #6366f1, #a855f7)',
+                  top: '50%',
+                  left: '50%',
+                  boxShadow: '0 0 8px rgba(99,102,241,0.8)',
+                }}
+                animate={{
+                  rotate: [0, 360],
+                  x: [0, orbitR, 0, -orbitR, 0],
+                  y: [-orbitR, 0, orbitR, 0, -orbitR],
+                }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+              />
+
+              {/* Center — cycling icon */}
+              <motion.div
+                className="relative z-10"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2, type: 'spring', bounce: 0.45, duration: 0.8 }}
+              >
+                {/* Pulsing glow — colour follows active icon */}
+                <motion.div
+                  className="absolute inset-0 rounded-full"
+                  style={{ filter: 'blur(14px)' }}
+                  animate={{
+                    background: ORBIT_ICONS[activeIcon].color,
+                    opacity: [0.35, 0.6, 0.35],
+                    scale: [1, 1.18, 1],
+                  }}
+                  transition={{ duration: 0.5, ease: 'easeInOut' }}
+                />
+                <div
+                  className="relative w-16 h-16 sm:w-[80px] sm:h-[80px] rounded-full flex items-center justify-center overflow-hidden select-none"
+                  style={{
+                    background: 'linear-gradient(145deg, #0f0c29 0%, #1e1b4b 60%, #0f0c29 100%)',
+                    border: `2px solid ${ORBIT_ICONS[activeIcon].color}70`,
+                    boxShadow: `0 0 28px ${ORBIT_ICONS[activeIcon].color}35, inset 0 1px 0 rgba(255,255,255,0.08)`,
+                    transition: 'border-color 0.4s, box-shadow 0.4s',
+                  }}
+                >
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeIcon}
+                      initial={{ opacity: 0, scale: 0.4, rotate: -30 }}
+                      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                      exit={{ opacity: 0, scale: 0.4, rotate: 30 }}
+                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      className="flex items-center justify-center"
+                    >
+                      {React.createElement(ORBIT_ICONS[activeIcon].Icon, {
+                        className: 'w-7 h-7 sm:w-8 sm:h-8',
+                        style: { color: ORBIT_ICONS[activeIcon].color },
+                      })}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Title + tags + domain */}
+            <div className="text-center space-y-2.5">
+              <h1 className="font-bold leading-tight">
+                {/* Row 1: Welcome To My */}
+                <div className="flex justify-center gap-1.5 sm:gap-2 text-2xl sm:text-4xl md:text-5xl mb-1">
+                  {['Welcome', 'To', 'My'].map((word, i) => (
+                    <motion.span
+                      key={word}
+                      className={isLight ? 'inline-block' : 'inline-block bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent'}
+                      style={isLight ? { color: 'var(--text-primary)' } : {}}
+                      initial={{ opacity: 0, x: -16 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.45 + i * 0.15, duration: 0.45 }}
+                    >
+                      {word}
+                    </motion.span>
+                  ))}
+                </div>
+                {/* Row 2: Portfolio Website */}
+                <div className="flex justify-center gap-2 sm:gap-3 text-2xl sm:text-4xl md:text-5xl">
+                  {['Portfolio', 'Website'].map((word, i) => (
+                    <motion.span
+                      key={word}
+                      className="inline-block bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent"
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.9 + i * 0.18, duration: 0.45 }}
+                    >
+                      {word}
+                    </motion.span>
+                  ))}
+                </div>
+              </h1>
+
+              {/* Role chips */}
+              <motion.div
+                className="flex flex-wrap justify-center gap-1.5 sm:gap-2"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.35, duration: 0.5 }}
+              >
+                {['AI Engineer', 'Full-Stack Dev', 'Data Scientist'].map((tag, i) => (
+                  <motion.span
+                    key={tag}
+                    className="px-2.5 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium"
+                    style={{
+                      background: isLight ? 'rgba(99,102,241,0.08)' : 'rgba(99,102,241,0.14)',
+                      border: '1px solid rgba(99,102,241,0.32)',
+                      color: isLight ? '#4f46e5' : '#a5b4fc',
+                    }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1.45 + i * 0.1, duration: 0.3 }}
+                    whileHover={{ scale: 1.08 }}
                   >
-                    <IconButton Icon={Icon} isLight={isLight} />
-                  </motion.div>
+                    {tag}
+                  </motion.span>
                 ))}
               </motion.div>
 
-              {/* Welcome Text */}
+              {/* Domain */}
               <motion.div
-                className="text-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.7 }}
-              >
-                <h1 className="font-bold leading-tight">
-                  <div className="text-3xl sm:text-5xl md:text-7xl mb-2 sm:mb-3">
-                    {["Welcome", "To", "My"].map((word, i) => (
-                      <motion.span
-                        key={word}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.5 + i * 0.2, duration: 0.5 }}
-                        className={`inline-block px-1 sm:px-2 ${isLight ? "" : "bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent"}`}
-                        style={isLight ? { color: "var(--text-primary)" } : {}}
-                      >
-                        {word}
-                      </motion.span>
-                    ))}
-                  </div>
-                  <div className="text-3xl sm:text-5xl md:text-7xl">
-                    <motion.span
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 1.1, duration: 0.5 }}
-                      className="inline-block px-1 sm:px-2 bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent"
-                    >
-                      Portfolio
-                    </motion.span>{' '}
-                    <motion.span
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 1.3, duration: 0.5 }}
-                      className="inline-block px-1 sm:px-2 bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent"
-                    >
-                      Website
-                    </motion.span>
-                  </div>
-                </h1>
-              </motion.div>
-
-              {/* Website Link / Typewriter */}
-              <motion.div
-                className="text-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.5, duration: 0.6 }}
-              >
-                <div className="inline-flex items-center gap-2 px-5 py-2.5 sm:px-7 sm:py-3.5 rounded-full relative group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-purple-600/20 rounded-full blur-md group-hover:blur-lg transition-all duration-300" />
-                  <div className="absolute inset-0 rounded-full border border-indigo-500/30" />
-                  <div className="relative flex items-center gap-2 text-base sm:text-2xl md:text-3xl">
-                    <Globe className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-400 flex-shrink-0" />
-                    <span className="bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent font-semibold tracking-wide">
-                      <TypewriterEffect text="abimanyudans.com" startDelay={1600} speed={100} />
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Loading Progress Bar */}
-              <motion.div
-                className="w-full max-w-xs sm:max-w-sm"
+                className="flex items-center justify-center gap-1.5"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1.8, duration: 0.5 }}
+                transition={{ delay: 1.75, duration: 0.5 }}
               >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs tracking-widest uppercase" style={{ color: "var(--text-muted)" }}>Loading</span>
-                  <span className="text-xs text-indigo-400 font-mono">{Math.min(Math.round(progress), 100)}%</span>
-                </div>
-                <div className="w-full h-0.5 rounded-full overflow-hidden" style={{ backgroundColor: isLight ? "rgba(99,102,241,0.15)" : "rgba(255,255,255,0.05)" }}>
-                  <motion.div
-                    className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
-                    style={{ width: `${Math.min(progress, 100)}%` }}
-                    transition={{ ease: "linear" }}
-                  />
-                </div>
+                <Globe className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
+                <span className="text-xs sm:text-sm font-mono bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
+                  abimanyudans.com
+                </span>
               </motion.div>
-
             </div>
+
+            {/* Progress section */}
+            <motion.div
+              className="w-full max-w-[260px] sm:max-w-[300px] space-y-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.5, duration: 0.5 }}
+            >
+              {/* Label row */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <motion.span
+                    className="block w-1.5 h-1.5 rounded-full bg-indigo-500"
+                    animate={{ scale: [1, 1.6, 1], opacity: [1, 0.5, 1] }}
+                    transition={{ duration: 0.9, repeat: Infinity }}
+                  />
+                  <span className="text-[10px] uppercase tracking-[0.18em]" style={{ color: 'var(--text-muted)' }}>
+                    Initializing
+                  </span>
+                </div>
+                <motion.span
+                  className="text-xs font-mono text-indigo-400 tabular-nums"
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 1.2, repeat: Infinity }}
+                >
+                  {Math.min(Math.round(progress), 100)}%
+                </motion.span>
+              </div>
+
+              {/* Bar */}
+              <div
+                className="w-full h-[3px] rounded-full overflow-hidden"
+                style={{ background: isLight ? 'rgba(99,102,241,0.12)' : 'rgba(255,255,255,0.06)' }}
+              >
+                <motion.div
+                  className="h-full rounded-full relative overflow-hidden"
+                  style={{ width: `${Math.min(progress, 100)}%` }}
+                >
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: 'linear-gradient(90deg, #4f46e5, #a855f7, #4f46e5)', backgroundSize: '200% 100%' }}
+                  />
+                  {/* Shimmer */}
+                  <motion.div
+                    className="absolute inset-0"
+                    style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent)', backgroundSize: '60px 100%' }}
+                    animate={{ backgroundPosition: ['-60px 0', '300px 0'] }}
+                    transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
+                  />
+                </motion.div>
+              </div>
+
+              {/* Step labels */}
+              <div className="flex justify-between">
+                {LOADING_STEPS.map((step, i) => (
+                  <span
+                    key={step}
+                    className="text-[9px] sm:text-[10px] font-mono transition-colors duration-500"
+                    style={{ color: progress >= (i + 1) * 25 ? '#818cf8' : 'var(--text-muted)' }}
+                  >
+                    {step}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+
           </div>
         </motion.div>
       )}
