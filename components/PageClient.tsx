@@ -31,6 +31,16 @@ export function PageClient() {
     }
   }, [lenis]);
 
+  // Stop/start Lenis in sync with welcome screen
+  // (Native scroll + touchmove/wheel lock is handled inside WelcomeScreen itself)
+  useEffect(() => {
+    if (showWelcome) {
+      lenis?.stop();
+    } else {
+      lenis?.start();
+    }
+  }, [showWelcome, lenis]);
+
   useEffect(() => {
     if (!showWelcome) {
       // AOS inits while WelcomeScreen is still mid-fade (500ms window),
@@ -59,13 +69,9 @@ export function PageClient() {
           When WelcomeScreen fades out, main animates in simultaneously. */}
       <motion.main
         className="pt-16 overflow-x-hidden"
-        initial={{ opacity: 0, y: 40, filter: 'blur(4px)' }}
-        animate={
-          showWelcome
-            ? { opacity: 0, y: 40, filter: 'blur(4px)' }
-            : { opacity: 1, y: 0, filter: 'blur(0px)' }
-        }
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+        initial={{ opacity: 0, y: 36 }}
+        animate={showWelcome ? { opacity: 0, y: 36 } : { opacity: 1, y: 0 }}
+        transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
       >
         <Hero />
         <About />

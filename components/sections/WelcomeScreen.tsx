@@ -85,6 +85,22 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
     el.style.background = `radial-gradient(480px at ${x}% ${y}%, rgba(99,102,241,0.11) 0%, transparent 65%)`;
   }, []);
 
+  // Lock all scroll while WelcomeScreen is mounted
+  useEffect(() => {
+    const prevent = (e: Event) => e.preventDefault();
+    // Set on both <html> and <body> — Lenis targets <html>, native scroll targets <body>
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('touchmove', prevent, { passive: false });
+    document.addEventListener('wheel',     prevent, { passive: false });
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.removeEventListener('touchmove', prevent);
+      document.removeEventListener('wheel',     prevent);
+    };
+  }, []);
+
   // Cycle through orbit icons — slower interval is easier on iOS GPU
   useEffect(() => {
     const cycle = setInterval(() => {
@@ -103,9 +119,10 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
 
     const timer = setTimeout(() => {
       setIsLoading(false);
-      // Delay matches exit animation duration so AnimatePresence can finish
-      // before WelcomeScreen is unmounted by the parent
-      setTimeout(() => onLoadingComplete?.(), 550);
+      // One frame delay separates the two React state updates so AnimatePresence
+      // can register the exit before the parent unmounts WelcomeScreen.
+      // Main entrance starts almost simultaneously → true cross-fade.
+      setTimeout(() => onLoadingComplete?.(), 16);
     }, 3400);
 
     return () => { clearTimeout(timer); clearInterval(interval); };
@@ -125,10 +142,9 @@ export default function WelcomeScreen({ onLoadingComplete }: WelcomeScreenProps)
           animate={{ opacity: 1, scale: 1, transition: { duration: 0.4, ease: 'easeOut' } }}
           exit={{
             opacity: 0,
-            y: -40,
+            y: -30,
             scale: 0.97,
-            filter: 'blur(6px)',
-            transition: { duration: 0.55, ease: [0.4, 0, 1, 1] },
+            transition: { duration: 0.9, ease: [0.4, 0, 1, 1] },
           }}
           onMouseMove={handleMouseMove}
         >
