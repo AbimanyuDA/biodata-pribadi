@@ -15,8 +15,7 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-// UPDATE: ganti dengan domain Anda yang sebenarnya
-const siteUrl = "https://abimanyudans.vercel.app";
+const siteUrl = "https://www.abimanyudans.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
