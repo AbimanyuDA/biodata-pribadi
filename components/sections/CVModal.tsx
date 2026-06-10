@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { useLenis } from "lenis/react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -19,6 +20,7 @@ export default function CVModal({ open, onClose, title, downloadLabel, closeLabe
   const pageContainerRef = useRef<HTMLDivElement>(null);
   const [pageWidth, setPageWidth] = useState(0);
   const [numPages, setNumPages] = useState(0);
+  const lenis = useLenis();
 
   useEffect(() => {
     if (!open) return;
@@ -27,11 +29,13 @@ export default function CVModal({ open, onClose, title, downloadLabel, closeLabe
     };
     document.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
+    lenis?.stop();
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
+      lenis?.start();
     };
-  }, [open, onClose]);
+  }, [open, onClose, lenis]);
 
   useEffect(() => {
     if (!open) return;
