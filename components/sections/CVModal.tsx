@@ -88,7 +88,7 @@ export default function CVModal({ open, onClose, title, downloadLabel, closeLabe
             </button>
           </div>
         </div>
-        <div ref={pageContainerRef} className="flex-1 w-full overflow-y-auto overflow-x-hidden" style={{ backgroundColor: "#525659" }}>
+        <div ref={pageContainerRef} data-lenis-prevent className="flex-1 w-full overflow-y-auto overflow-x-hidden" style={{ backgroundColor: "#525659" }}>
           {pageWidth > 0 && (
             <Document file="/CV.pdf" onLoadSuccess={({ numPages: total }) => setNumPages(total)} loading={null}>
               {Array.from({ length: numPages }, (_, index) => (
