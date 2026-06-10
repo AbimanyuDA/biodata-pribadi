@@ -1,10 +1,13 @@
 "use client";
 import React, { useState, useEffect, useCallback, memo } from "react";
 import Image from "next/image";
-import { Github, Linkedin, Mail, ExternalLink, Sparkles, Award, Code2, Zap, Instagram, FileText, X, Download } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Github, Linkedin, Mail, ExternalLink, Sparkles, Award, Code2, Zap, Instagram, FileText } from "lucide-react";
 import { useLanguage } from "../LanguageProvider";
 import { useTheme } from "../ThemeProvider";
 import { t, tx } from "../../utils/translations";
+
+const CVModal = dynamic(() => import("./CVModal"), { ssr: false });
 
 const StatusBadge = memo(({ lang }: { lang: string }) => (
   <div className="inline-block animate-float" data-aos="zoom-in" data-aos-delay="400">
@@ -87,65 +90,6 @@ const CVButton = memo(({ text, isLight, onClick }: { text: string; isLight: bool
   </button>
 ));
 CVButton.displayName = "CVButton";
-
-const CVModal = memo(({ open, onClose, title, downloadLabel, closeLabel }: { open: boolean; onClose: () => void; title: string; downloadLabel: string; closeLabel: string }) => {
-  useEffect(() => {
-    if (!open) return;
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
-    };
-  }, [open, onClose]);
-
-  if (!open) return null;
-
-  return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 bg-black/70 backdrop-blur-sm animate-fade-in"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label={title}
-    >
-      <div
-        className="relative w-full max-w-3xl h-[85vh] rounded-2xl border overflow-hidden flex flex-col shadow-2xl"
-        style={{ backgroundColor: "var(--bg-secondary)", borderColor: "var(--border)" }}
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="flex items-center justify-between gap-3 px-4 sm:px-5 py-3 border-b" style={{ borderColor: "var(--border)" }}>
-          <h3 className="text-sm sm:text-base font-semibold truncate" style={{ color: "var(--text-primary)" }}>{title}</h3>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <a
-              href="/CV.pdf"
-              download
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium border transition-colors"
-              style={{ color: "var(--text-secondary)", borderColor: "var(--border)" }}
-            >
-              <Download className="w-4 h-4" />
-              {downloadLabel}
-            </a>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label={closeLabel}
-              className="p-1.5 rounded-lg border transition-colors"
-              style={{ color: "var(--text-secondary)", borderColor: "var(--border)" }}
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-        <iframe src="/CV.pdf" title={title} className="flex-1 w-full" style={{ border: "none" }} />
-      </div>
-    </div>
-  );
-});
-CVModal.displayName = "CVModal";
 
 const SocialLink = memo(({ icon: Icon, link, label, isLight }: { icon: React.ComponentType<any>; link: string; label: string; isLight: boolean }) => (
   <a href={link} target="_blank" rel="noopener noreferrer" aria-label={label} className="group relative p-2.5">
