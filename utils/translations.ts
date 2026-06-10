@@ -31,6 +31,7 @@ export const t = {
     awards: { id: "Penghargaan", en: "Awards" },
     ctaProjects: { id: "Proyek", en: "Projects" },
     ctaContact: { id: "Kontak", en: "Contact" },
+    ctaViewCV: { id: "Lihat CV", en: "View CV" },
   },
 
   about: {

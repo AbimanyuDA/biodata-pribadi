@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useCallback, memo } from "react";
 import Image from "next/image";
-import { Github, Linkedin, Mail, ExternalLink, Sparkles, Award, Code2, Zap, Instagram } from "lucide-react";
+import { Github, Linkedin, Mail, ExternalLink, Sparkles, Award, Code2, Zap, Instagram, FileText, X, Download } from "lucide-react";
 import { useLanguage } from "../LanguageProvider";
 import { useTheme } from "../ThemeProvider";
 import { t, tx } from "../../utils/translations";
@@ -64,6 +64,88 @@ const CTAButton = memo(({ href, text, icon: Icon, isLight }: { href: string; tex
   </a>
 ));
 CTAButton.displayName = "CTAButton";
+
+const CVButton = memo(({ text, isLight, onClick }: { text: string; isLight: boolean; onClick: () => void }) => (
+  <button type="button" onClick={onClick} className="group relative flex-1 sm:flex-none sm:w-[140px]">
+    <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4f52c9] to-[#8644c5] rounded-xl opacity-60 blur-md group-hover:opacity-100 transition-all duration-700"></div>
+    <div
+      className="relative h-11 rounded-lg flex items-center justify-center gap-2 overflow-hidden border transition-all duration-300"
+      style={{
+        background: isLight ? "#ffffff" : "#030014",
+        borderColor: isLight ? "rgba(99,102,241,0.4)" : "rgba(255,255,255,0.1)",
+      }}
+    >
+      <div className="absolute inset-0 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 bg-[#6366f1]/10"></div>
+      <span
+        className="relative flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold transition-all duration-300"
+        style={{ color: isLight ? "#4f52c9" : "var(--text-primary)" }}
+      >
+        {text}
+        <FileText className="w-4 h-4 group-hover:scale-110 transform transition-all duration-300" />
+      </span>
+    </div>
+  </button>
+));
+CVButton.displayName = "CVButton";
+
+const CVModal = memo(({ open, onClose, title, downloadLabel, closeLabel }: { open: boolean; onClose: () => void; title: string; downloadLabel: string; closeLabel: string }) => {
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 bg-black/70 backdrop-blur-sm animate-fade-in"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
+    >
+      <div
+        className="relative w-full max-w-3xl h-[85vh] rounded-2xl border overflow-hidden flex flex-col shadow-2xl"
+        style={{ backgroundColor: "var(--bg-secondary)", borderColor: "var(--border)" }}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="flex items-center justify-between gap-3 px-4 sm:px-5 py-3 border-b" style={{ borderColor: "var(--border)" }}>
+          <h3 className="text-sm sm:text-base font-semibold truncate" style={{ color: "var(--text-primary)" }}>{title}</h3>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <a
+              href="/CV.pdf"
+              download
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium border transition-colors"
+              style={{ color: "var(--text-secondary)", borderColor: "var(--border)" }}
+            >
+              <Download className="w-4 h-4" />
+              {downloadLabel}
+            </a>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label={closeLabel}
+              className="p-1.5 rounded-lg border transition-colors"
+              style={{ color: "var(--text-secondary)", borderColor: "var(--border)" }}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+        <iframe src="/CV.pdf" title={title} className="flex-1 w-full" style={{ border: "none" }} />
+      </div>
+    </div>
+  );
+});
+CVModal.displayName = "CVModal";
 
 const SocialLink = memo(({ icon: Icon, link, label, isLight }: { icon: React.ComponentType<any>; link: string; label: string; isLight: boolean }) => (
   <a href={link} target="_blank" rel="noopener noreferrer" aria-label={label} className="group relative p-2.5">
@@ -132,6 +214,7 @@ export function Hero() {
   const [wordIndex, setWordIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
+  const [isCVOpen, setIsCVOpen] = useState(false);
 
   const WORDS = t.hero.words[lang];
 
@@ -251,6 +334,7 @@ export function Hero() {
             <div className="flex flex-row gap-3 w-full justify-center lg:justify-start max-w-lg mx-auto lg:mx-0" data-aos="fade-up" data-aos-delay="1400">
               <CTAButton href="#portfolio" text={tx(t.hero.ctaProjects, lang)} icon={ExternalLink} isLight={isLight} />
               <CTAButton href="#contact" text={tx(t.hero.ctaContact, lang)} icon={Mail} isLight={isLight} />
+              <CVButton text={tx(t.hero.ctaViewCV, lang)} isLight={isLight} onClick={() => setIsCVOpen(true)} />
             </div>
 
             {/* Social Links */}
@@ -291,6 +375,14 @@ export function Hero() {
 
         </div>
       </div>
+
+      <CVModal
+        open={isCVOpen}
+        onClose={() => setIsCVOpen(false)}
+        title={tx(t.hero.ctaViewCV, lang)}
+        downloadLabel={lang === "id" ? "Unduh" : "Download"}
+        closeLabel={lang === "id" ? "Tutup" : "Close"}
+      />
     </section>
   );
 }
