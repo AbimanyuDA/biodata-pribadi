@@ -72,7 +72,7 @@ html[data-theme="light"] section {
 }
 
 html[data-theme="light"] p,
-html[data-theme="light"] span,
+html[data-theme="light"] span:not(.react-pdf__Page__textContent span),
 html[data-theme="light"] li {
   color: inherit;
 }
